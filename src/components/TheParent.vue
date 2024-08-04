@@ -31,18 +31,6 @@
       </div>
       <!-- End Page-content -->
 
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-sm-6"></div>
-            <div class="col-sm-6">
-              <div class="text-sm-end d-none d-sm-block">
-                Fahrosi Angger © 2024 Informatika Universitas Madura
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   </div>
 </template>

@@ -28,21 +28,9 @@
       </RouterLink>
     </li>
     <li>
-      <RouterLink to="/" class="waves-effect">
+      <RouterLink to="/pengajuan" class="waves-effect">
         <i data-feather="check-circle"></i>
         <span data-key="t-horizontal">Pengajuan Penerbitan</span>
-      </RouterLink>
-    </li>
-    <li>
-      <RouterLink to="/" class="waves-effect">
-        <i data-feather="book-open"></i>
-        <span data-key="t-horizontal">Katalog</span>
-      </RouterLink>
-    </li>
-    <li>
-      <RouterLink to="/" class="waves-effect">
-        <i data-feather="shopping-bag"></i>
-        <span data-key="t-horizontal">Pemesanan</span>
       </RouterLink>
     </li>
     <li class="">
@@ -56,22 +44,22 @@
         style="height: 0px"
       >
         <li>
-          <a href="apps-calendar.html">
+          <RouterLink to="/tentang-kami">
             <span data-key="t-calendar">Tentang Kami</span>
-          </a>
+          </RouterLink>
         </li>
 
-        <li>
+        <!-- <li>
           <a href="apps-chat.html">
             <span data-key="t-chat">Testimoni</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </li>
   </ul>
 </template>
 <style scoped>
 li a {
-  font-size: 13px !important;
+  font-size: 14px !important;
 }
 </style>

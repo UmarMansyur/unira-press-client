@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&amp;display=swap);
 body {
-  font-family: Noto Sans,Segoe UI,IBM Plex Sans,Tahoma,Geneva,Verdana,sans-serif !important;
-
+  /* font-family: Noto Sans,Segoe UI,IBM Plex Sans,Tahoma,Geneva,Verdana,sans-serif !important; */
+  font-family: 'IBM Plex Sans', sans-serif !important;
 }
 
 [data-bs-theme=dark] .bg-dark {
@@ -2088,6 +2088,12 @@ body[data-layout=horizontal][data-layout-size=boxed] .navbar-header {
 }
 
 .btn-blue:active {
+  background-color: #102C57 !important;
+  border-color: #102C57 !important;
+  color: #fff;
+}
+
+.btn-blue:disabled {
   background-color: #102C57 !important;
   border-color: #102C57 !important;
   color: #fff;
