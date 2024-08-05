@@ -13,39 +13,40 @@
             <div class="row">
               <div class="col-12">
                 <div class="mb-3">
-                  <label for="judul" class="form-label">Judul</label>
+                  <label for="judul" class="form-label"><sup class="text-danger">*</sup>Judul:</label>
                   <input type="text" class="form-control" v-model="title" placeholder="Judul buku"/>
                 </div>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-8">
                 <div class="mb-3">
                   <label for="kepengarangan" class="form-label"
-                    >Kepengarangan</label
+                    ><sup class="text-danger">*</sup>Kepengarangan:</label
                   >
                   <input type="text" class="form-control" v-model="author" id="kepengarangan" name="kepengarangan" placeholder="Kepengarangan"/>
+                  <small>Jika pengarang lebih dari 1 orang maka, pisahkan dengan titik koma ";" Contoh: Fahrosi;Amelia Hasanah</small>
                 </div>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-2">
                 <div class="mb-3">
-                  <label for="edisi" class="form-label">Edisi</label>
+                  <label for="edisi" class="form-label"><sup class="text-danger">*</sup>Edisi:</label>
                   <input type="text" class="form-control" v-model="edition" name="edisi" id="edisi" placeholder="Edisi"/>
                 </div>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-2">
                 <div class="mb-3">
-                  <label for="seri" class="form-label">Seri</label>
+                  <label for="seri" class="form-label"><sup class="text-danger">*</sup>Seri:</label>
                   <input type="text" class="form-control" v-model="series" id="seri" name="seri" placeholder="Seri"/>
                 </div>
               </div>
               <div class="col-sm-12">
                 <div class="mb-3">
-                  <label for="link" class="form-label">Link Buku</label>
+                  <label for="link" class="form-label">Link Buku:</label>
                   <input type="text" class="form-control" v-model="link" id="link" name="link" placeholder="Link Buku"/>
                 </div>
               </div>
               <div class="col-sm-12">
                 <div class="mb-3">
-                  <label for="judul" class="form-label">Deskripsi</label>
+                  <label for="judul" class="form-label"><sup class="text-danger">*</sup>Sinopsis:</label>
                   <CKEditor @input="getInput" :value="sinopsis"/>
                 </div>
               </div>
@@ -81,49 +82,47 @@
           </div>
           <div class="card-body">
             <div class="row">
-              <div class="col-12">
-                <div class="mb-3">
-                  <label for="distributor" class="form-label"
-                    >Distributor</label
-                  >
-                  <input type="text" class="form-control" v-model="distribution" placeholder="Distributor"/>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="mb-3">
-                  <label for="tahun-terbit" class="form-label"
-                    >Tahun Terbit</label
-                  >
-                  <input type="text" class="form-control" v-model="publish_year" placeholder="Tahun Terbit"/>
-                </div>
-              </div>
+             
               
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <div class="mb-3">
                   <label for="judul" class="form-label"
-                    >Jumlah Halaman</label
+                    ><sup class="text-danger">*</sup>Jumlah Halaman:</label
                   >
-                  <input type="text" class="form-control" v-model="page_count" placeholder="Jumlah Halaman" />
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="mb-3">
-                  <label for="judul" class="form-label">Tinggi Buku</label>
-                  <input type="text" class="form-control" v-model="height" placeholder="Tinggi Buku"/>
+                  <input type="text" class="form-control" v-model="page_count" placeholder="Jumlah Halaman"/>
                 </div>
               </div>
               <div class="col-sm-3">
                 <div class="mb-3">
-                  <label for="terbitan" class="form-label">Terbitan</label>
-                  <select class="form-select" v-model="publicationId">
-                    <option value="" disabled>Pilih Terbitan</option>
-                    <option v-for="item in detail.terbitan" :value="item.id">{{ item.name }}</option>
-                  </select>
+                  <label for="judul" class="form-label"><sup class="text-danger">*</sup>Lebar Buku:</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" v-model="width" placeholder="Lebar Buku"/>
+                    <span class="input-group-text">cm</span>
+                  </div>
                 </div>
               </div>
               <div class="col-sm-3">
                 <div class="mb-3">
-                  <label for="judul" class="form-label">Kategori Pembaca</label>
+                  <label for="judul" class="form-label"><sup class="text-danger">*</sup>Tinggi Buku:</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" v-model="height" placeholder="Tinggi Buku"/>
+                    <span class="input-group-text">cm</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="mb-3">
+                  <label for="judul" class="form-label"><sup class="text-danger">*</sup>Berat Buku:</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" v-model="weight" placeholder="Berat Buku"/>
+                    <span class="input-group-text">gr</span>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="col-sm-3">
+                <div class="mb-3">
+                  <label for="judul" class="form-label"><sup class="text-danger">*</sup>Kategori Pembaca</label>
                   <select class="form-select" v-model="readerCategoryId" id="kategori">
                     <option value="" disabled>Pilih Kategori</option>
                     <option v-for="item in detail.kategori_pembaca" :value="item.id">{{ item.name }}</option>
@@ -133,25 +132,40 @@
               <div class="col-sm-3">
                 
                 <div class="mb-3">
-                  <label for="jenis-pustaka" class="form-label">Jenis Pustaka</label>
+                  <label for="jenis-pustaka" class="form-label"><sup class="text-danger">*</sup>Jenis Pustaka</label>
                   <select class="form-select" v-model="referenceTypeId">
-                    <option value="" disabled>Jenis Pustaka</option>
+                    <option value="" disabled>Pilih Jenis Pustaka</option>
                     <option v-for="item in detail.jenis_pustaka" :value="item.id">{{ item.name }}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-3">
                 <div class="mb-3">
-                  <label for="jenis-pustaka" class="form-label">Kategori Jenis</label>
+                  <label for="jenis-pustaka" class="form-label"><sup class="text-danger">*</sup>Kategori Jenis</label>
                   <select class="form-select" v-model="typeCategoryId">
-                    <option value="" disabled>Kategori Jenis</option>
+                    <option value="" disabled>Pilih Kategori Jenis</option>
                     <option v-for="item in detail.kategori_jenis" :value="item.id">{{ item.name }}</option>
                   </select>
                 </div>
               </div>
-              <div class="col-sm-12">
+              <div class="col-sm-3">
                 <div class="mb-3">
-                  <label for="file" class="form-label">File: </label>
+                  <label for="jenis-pustaka" class="form-label"><sup class="text-danger">*</sup>Media</label>
+                  <select class="form-select" v-model="mediaId">
+                    <option value="" disabled>Pilih Media</option>
+                    <option v-for="item in detail.media" :value="item.id">{{ item.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="file" class="form-label"><sup class="text-danger">*</sup>Cover: </label>
+                  <input type="file" class="form-control" @change="getFile"/>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="file" class="form-label"><sup class="text-danger">*</sup>File: </label>
                   <input type="file" class="form-control" @change="getFile"/>
                 </div>
               </div>
@@ -214,12 +228,14 @@ const schema = yup.object().shape({
   readerCategoryId: yup.string().required(),
   referenceTypeId: yup.string().required(),
   typeCategoryId: yup.string().required(),
-  publicationId: yup.string().required(),
   mediaId: yup.string().required(),
+  width: yup.string().required(),
+  weight: yup.string().required(),
+
 });
 
 
-const { meta } = useForm({
+useForm({
   validationSchema: schema,
   initialValues: {
     title: "",
@@ -235,7 +251,9 @@ const { meta } = useForm({
     readerCategoryId: "",
     referenceTypeId: "",
     typeCategoryId: "",
-    publicationId: ""
+    mediaId: "",
+    width: "",
+    weight: "",
   },
 });
 
@@ -252,11 +270,14 @@ const { value: height } = useField<string>("height");
 const { value: readerCategoryId } = useField<string>("readerCategoryId");
 const { value: referenceTypeId } = useField<string>("referenceTypeId");
 const { value: typeCategoryId } = useField<string>("typeCategoryId");
-const { value: publicationId } = useField<string>("publicationId");
+const { value: mediaId } = useField<string>("mediaId");
+const { value: weight } = useField<string>("weight");
+const { value: width } = useField<string>("width");
+
 
 const session = useSession();
 
-const { getResource, postResourceFormData } = useApi();
+const { getResource, postResource, postResourceFormData } = useApi();
 
 const detail = ref<any>(null);
 const kategoris = async () => {
@@ -283,15 +304,26 @@ const saveData = async() => {
     readerCategoryId: readerCategoryId.value,
     referenceTypeId: referenceTypeId.value,
     typeCategoryId: typeCategoryId.value,
-    publicationId: publicationId.value,
     status_publish: 'Menunggu',
-    nomor_induk: session.getUser?.id
+    nomor_induk: session.getUser?.id,
+    mediaId: mediaId.value,
+    width: width.value,
+    weight: weight.value,
   }
-  if (file.value) {
-    data.file = file.value;
-  }
-  const response = await postResourceFormData('/pengajuan', data);
+
+  const response = await postResource('/pengajuan', data);
   if(response.data) {
+    const formData = new FormData();
+
+    await postResourceFormData(`/file-revisi`, {
+      file: file.value,
+      pengajuan_id: response.data.id,
+    });
+    
+    await postResourceFormData(`/pengajuan/cover/${response.data.id}`, {
+      file: file.value,
+    });
+
     Notify.success('Data berhasil disimpan');
     emits("setClick", false);
   }

@@ -12,6 +12,7 @@
     "@ckeditor/ckeditor5-vue": "^6.0.0",
     "ckeditor5": "^42.0.2",
     "ckeditor5-premium-features": "^42.0.2",
+    "js-base64": "^3.7.7",
     "pinia": "^2.2.0",
     "vee-validate": "^4.13.2",
     "vue": "^3.4.31",

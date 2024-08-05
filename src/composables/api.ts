@@ -10,7 +10,9 @@ export default function useApi() {
         body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${
+            JSON.parse(sessionStorage.getItem("token")!).access
+          }`,
         },
       });
       const data = await response.json();

@@ -1,12 +1,15 @@
 <template>
   <TheParent>
-    <template v-if="detail && !addClick">
-      <Selengkapnya @close="close"/>
+    <template v-if="detail && !addClick && !ubahClick">
+      <Selengkapnya @close="close" :data="detailData" @ubah-click="getUbahClick"/>
     </template>
-    <template v-if="addClick">
-      <TambahPengajuan @set-click="getClick"/>
+    <template v-if="addClick && !detail">
+      <TambahPengajuan @set-click="getClick" />
     </template>
-    <template v-else-if="!addClick && !detail">
+    <template v-if="ubahClick">
+      <EditPengajuan :datas="dataDetail" @set-click="getClick"  @ubah-click="getUbahClick"/>
+    </template>
+    <template v-else-if="!addClick && !detail && !ubahClick">
       <div class="row">
         <div class="col-auto mb-3">
           <select class="form-select">
@@ -91,91 +94,133 @@
                   <th>Judul</th>
                   <th>Penulis</th>
                   <th class="text-center">Status</th>
-                  <th class="text-center">Detail</th>
-                  <th class="text-center">Aksi</th>
+                  <th class="text-center">#</th>
                 </tr>
               </thead>
               <tbody class="align-middle">
-                <tr v-for="i in 10" :key="i">
-                  <td class="text-center">1</td>
-                  <td>2021-08-01</td>
-                  <td>Menulis Buku</td>
-                  <td>Khana Zulfana Imam</td>
+                <tr v-for="(item, i) in result" :key="i">
+                  <td class="text-center">{{ currentPage * limitPage - limitPage + i + 1 }}</td>
+                  <td>{{ new Date(item.createdAt).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}</td>
+                  <td>
+                    {{ item.title }}
+                  </td>
+                  <td>
+                    {{ item.author }}
+                  </td>
                   <td class="text-center">
                     <span class="badge bg-info font-size-14 rounded-pill">
                       <span>AKTIF</span>
                     </span>
                   </td>
                   <td class="text-center">
-                    <button class="btn btn-sm btn-light btn-label" @click="detail = true">
-                      <i class="bx bx-search label-icon"></i> Selengkapnya
+                    <button
+                      class="btn btn-sm btn-light btn-label"
+                      @click="clickedMore(item.id)"
+                    >
+                      <i class="bx bx-search-alt label-icon"></i> Selengkapnya
                     </button>
                   </td>
-                  <td class="text-center">
-                    <button class="btn btn-sm btn-warning-2 mx-1">
-                      <i class="bx bx-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-red">
-                      <i class="bx bx-trash"></i>
-                    </button>
-                  </td>
+                 
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div class="mb-0">
-            <span class="me-2">Menampilkan 1-10 dari 100 data</span>
-          </div>
-          <div>
-            <ul class="pagination pagination-sm mb-0">
-              <li class="page-item disabled">
-                <span class="page-link"
-                  ><i class="mdi mdi-chevron-left"></i
-                ></span>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item active">
-                <span class="page-link">
-                  2
-                  <span class="sr-only">(current)</span>
-                </span>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#"
-                  ><i class="mdi mdi-chevron-right"></i
-                ></a>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <Pagination
+          :current-page="currentPage"
+          :is-first-page="isFirstPage"
+          :is-last-page="isLastPage"
+          :go-to="goToPage"
+          :next-page="nextPage"
+          :page-list="pageList"
+          :total-page="totalPage"
+          :prev-page="prevPage"
+          :total-data="totalData"
+          v-if="result.length > 0"
+        />
       </div>
     </template>
   </TheParent>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import TheParent from "../components/TheParent.vue";
 import Selengkapnya from "./Selengkapnya.vue";
+import Pagination from "../components/Pagination.vue";
 import TambahPengajuan from "./TambahPengajuan.vue";
+import usePagination from "../composables/pagination";
+import { disableLoader, enableLoader } from "../helpers/event";
+import useApi from "../composables/api";
+import EditPengajuan from "./EditPengajuan.vue";
+
+const query = ref<string>("");
+
+const ubahClick = ref<boolean>(false);
+
+const dataDetail = ref<any>({});
+const getUbahClick = async (value: any) => {
+  ubahClick.value = value.value ? value.value : false;
+  dataDetail.value = value.data ? value.data : {};
+  detailData.value = value.data ? value.data : {};
+  // detail.value = value.value ? false : true;
+};
+
+const {
+  result,
+  totalData,
+  currentPage,
+  totalPage,
+  pageList,
+  search,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  prevPage,
+  goToPage,
+  fetchData,
+  changeLimit,
+  limitPage,
+} = usePagination("/pengajuan", "", query);
+
+onMounted(async () => {
+  enableLoader();
+  await fetchData();
+  disableLoader();
+});
 
 const detail = ref<boolean>(false);
 const addClick = ref<boolean>(false);
+const detailData = ref<any>({});
 
-const getClick = (value: any) => {
+const getClick = async (value: any) => {
+  enableLoader();
+  await fetchData();
+  disableLoader();
   addClick.value = value;
 };
 
-const close = () => {
+const close = async () => {
+  enableLoader();
+  await fetchData();
+  disableLoader();
   detail.value = false;
 };
 
-const setClick = (value: boolean) => {
+const setClick = async (value: boolean) => {
+  enableLoader();
+  await fetchData();
+  disableLoader();
   addClick.value = value;
 };
 
+const { getResource } = useApi();
 
+const clickedMore = async (id: string) => {
+  detail.value = true;
+  const response = await getResource('/pengajuan/' + id);
+  if (response) {
+    detailData.value = response.data;
+  }
+};
 </script>

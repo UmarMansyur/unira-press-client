@@ -1,3 +1,4 @@
+import { Base64 } from "js-base64";
 import { disableLoader, enableLoader } from "../helpers/event";
 import Notify from "../helpers/notify";
 import router from "../routes";
@@ -5,7 +6,7 @@ import {useSession} from "../stores/session";
 
 export default function useToken() {
   const session = useSession();
-  const setToken = (token: any) => {
+  const setToken = async (token: any) => {
     sessionStorage.setItem("token", JSON.stringify(token));
   };
 
@@ -13,14 +14,18 @@ export default function useToken() {
     return JSON.parse(sessionStorage.getItem("token") || "null");
   };
 
-  const checkExpiredToken = () => {
+  const checkExpiredToken = async () => {
     const token = getToken().access;
     if (!token) {
-      return true;
+      Notify.error("Token tidak ditemukan");
+      return;
     }
-    const decoded = JSON.parse(atob(token.split(".")[1]));
+
+    const decodedString = Base64.decode(token.split(".")[1]);
+    const decoded = JSON.parse(decodedString);
     const expired = new Date(decoded.exp * 1000);
     if (new Date() > expired) {
+      await refreshToken();
       return true;
     }
     return false;
@@ -46,11 +51,11 @@ export default function useToken() {
   const decodeToken = async () => {
     try {
       enableLoader();
-      const exp = checkExpiredToken();
+      const exp = await checkExpiredToken();
       if (exp) {
         session.$reset();
         router.push({ name: "Login" });
-        sessionStorage.removeItem("token");
+        sessionStorage.clear();
         Notify.error("Token Kadaluarsa");
       }
       const response = await fetch(import.meta.env.VITE_API + "/auth/whoami", {
@@ -67,7 +72,6 @@ export default function useToken() {
       return data.data;
     } catch (error) {
       disableLoader();
-      console.log(error);
     }
   };
 
