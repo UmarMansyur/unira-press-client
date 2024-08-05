@@ -89,7 +89,7 @@
           <div class="d-grid">
             <button
               type="button"
-              class="btn btn-blue rounded-3 py-2 font-size-16"
+              class="btn btn-blue rounded-3 font-size-13"
               @click="tryLogin"
               :disabled="!meta.valid"
             >
@@ -107,12 +107,10 @@ import { useField, useForm } from "vee-validate";
 import * as yup from "yup";
 import Notify from "../helpers/notify";
 import useToken from "../composables/token";
-import useSession from "../stores/session";
 import router from "../routes";
 
-const { setToken, decodeToken } = useToken();
+const { setToken } = useToken();
 
-const session = useSession();
 
 const schema = yup.object().shape({
   username: yup.string().required(),
@@ -142,8 +140,7 @@ const tryLogin = async () => {
     if (role.value === "client") {
       data.client = "client";
     }
-
-    const result = await fetch("http://localhost:3000/auth/login", {
+    const result = await fetch(import.meta.env.VITE_API + "/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,8 +151,6 @@ const tryLogin = async () => {
     const response = await result.json();
     if (response.data) {
       setToken(response.data);
-      const user: any = await decodeToken();
-      session.setUser(user.data);
       router.push("/");
     }
     if (!result.ok) {

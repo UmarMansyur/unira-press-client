@@ -4,7 +4,7 @@
       <Selengkapnya @close="close"/>
     </template>
     <template v-if="addClick">
-      <TambahPengajuan @add-click="addClick = $event"/>
+      <TambahPengajuan @set-click="getClick"/>
     </template>
     <template v-else-if="!addClick && !detail">
       <div class="row">
@@ -76,7 +76,7 @@
           />
         </div>
         <div class="col-auto ms-auto">
-          <button type="button" class="btn btn-blue" @click="addClick = true">
+          <button type="button" class="btn btn-blue" @click="setClick(true)">
             <i class="bx bx-plus-circle"></i> Tambah Pengajuan
           </button>
         </div>
@@ -165,7 +165,17 @@ import TambahPengajuan from "./TambahPengajuan.vue";
 const detail = ref<boolean>(false);
 const addClick = ref<boolean>(false);
 
+const getClick = (value: any) => {
+  addClick.value = value;
+};
+
 const close = () => {
   detail.value = false;
 };
+
+const setClick = (value: boolean) => {
+  addClick.value = value;
+};
+
+
 </script>

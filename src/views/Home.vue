@@ -7,8 +7,8 @@
           <span class="badge bg-blue font-size-14">
             <span>AKTIF</span>
           </span>
-          <h4 class="mb-0 mt-2">2020520018</h4>
-          <h3>KHANA ZULFANA IMAM</h3>
+          <h4 class="mb-0 mt-2">{{ session.getUser?.id }}</h4>
+          <h3>{{session.getUser?.username}}</h3>
         </div>
         <div class="mt-3 d-flex flex-column justify-content-center align-items-center">
           <img src="/assets/images/logo.png" alt="profile" class="avatar-md" />
@@ -25,4 +25,6 @@
 
 <script setup lang="ts">
   import TheParent from "../components/TheParent.vue";
+import { useSession } from "../stores/session";
+  const session = useSession();
 </script>

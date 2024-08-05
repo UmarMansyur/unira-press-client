@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {useSession} from "../stores/session";
+import useToken from "../composables/token";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -50,18 +52,26 @@ const router = createRouter({
   linkExactActiveClass: "active",
 });
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _, next) => {
   document.title = to.meta.title as string;
+  const session = useSession();
+  const { decodeToken } = useToken();
   if (to.name !== "Login" && sessionStorage.getItem("token") === null) {
     return next({ name: "Login" });
   }
   if (to.name === "Login" && sessionStorage.getItem("token") !== null) {
-    return next({ name: "Home" });
+    return next({ name: "Beranda" });
   }
   if (to.name === "Login" && sessionStorage.getItem("token") === null) {
     return next();
   }
-  next();
+  if (to.name !== "Login" && sessionStorage.getItem("token") !== null) {
+    if(session.user === null) {
+      const user = await decodeToken();
+      session.setUser(user);
+    }
+    return next();
+  }
 });
 
 export default router;

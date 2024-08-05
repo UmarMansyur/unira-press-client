@@ -9,12 +9,12 @@ export default function useApi() {
         method,
         body: JSON.stringify(body),
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       });
       const data = await response.json();
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error(data.message);
       }
       disableLoader();
@@ -23,23 +23,23 @@ export default function useApi() {
       Notify.error(error.message);
       disableLoader();
     }
-  }
+  };
 
   const getResource = async (url: string) => {
-    return await tryFetch(url, 'GET');
-  }
+    return await tryFetch(url, "GET");
+  };
 
   const postResource = async (url: string, body: any) => {
-    return await tryFetch(url, 'POST', body);
-  }
+    return await tryFetch(url, "POST", body);
+  };
 
   const putResource = async (url: string, body: any) => {
-    return await tryFetch(url, 'PUT', body);
-  }
+    return await tryFetch(url, "PUT", body);
+  };
 
   const deleteResource = async (url: string) => {
-    return await tryFetch(url, 'DELETE');
-  }
+    return await tryFetch(url, "DELETE");
+  };
 
   const postResourceFormData = async (url: string, body: any) => {
     try {
@@ -49,14 +49,16 @@ export default function useApi() {
         formData.append(key, body[key]);
       }
       const response = await fetch(import.meta.env.VITE_API + url, {
-        method: 'POST',
-        body: formData,
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+          Authorization: `Bearer ${
+            JSON.parse(sessionStorage.getItem("token") || "").access
+          }`,
         },
+        body: formData,
       });
       const data = await response.json();
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error(data.message);
       }
       disableLoader();
@@ -65,7 +67,7 @@ export default function useApi() {
       Notify.error(error.message);
       disableLoader();
     }
-  }
+  };
 
   return {
     getResource,
@@ -73,5 +75,5 @@ export default function useApi() {
     putResource,
     deleteResource,
     postResourceFormData,
-  }
+  };
 }

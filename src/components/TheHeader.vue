@@ -44,11 +44,11 @@
           >
             <img
               class="rounded-circle header-profile-user"
-              src="https://api.unira.ac.id/img/profil/mhs/8e35dc4c9c4b61b341800d1ef1f10eba.jpg"
+              :src="`${session.getUser?.thumbnail}`"
               alt="Header Avatar"
             />
             <span class="d-none d-xl-inline-block ms-2 fw-medium"
-              >Khana Zulfana Imam</span
+              >{{ session.getUser?.username }}</span
             >
           </button>
         </div>
@@ -56,6 +56,7 @@
           <button
             type="button"
             class="btn header-item noti-icon right-bar-toggle"
+            @click="tryLogout"
           >
             <i data-feather="power" class="icon-lg"></i>
           </button>
@@ -68,6 +69,10 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
+import {useSession} from "../stores/session.ts";
+import router from "../routes";
+
+const session = useSession();
 
 const toggleMenu = () => {
   document.body.classList.toggle("sidebar-enable");
@@ -84,6 +89,13 @@ const toggleMenu = () => {
   document.getElementById("wrapper-sidebar-img")?.classList.toggle("mb-5");
   document.getElementById("wrapper-sidebar-img")?.classList.toggle("mt-4");
   document.getElementById("sidebar-name")?.classList.toggle("d-none");
+};
+
+
+const tryLogout = () => {
+  sessionStorage.clear()
+  session.logout();
+  router.push('/login');
 };
 
 onMounted(() => {

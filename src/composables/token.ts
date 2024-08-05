@@ -1,20 +1,20 @@
 import { disableLoader, enableLoader } from "../helpers/event";
 import Notify from "../helpers/notify";
 import router from "../routes";
-import useSession from "../stores/session";
+import {useSession} from "../stores/session";
 
 export default function useToken() {
   const session = useSession();
-  const setToken = (token: string) => {
-    sessionStorage.setItem("token", token);
+  const setToken = (token: any) => {
+    sessionStorage.setItem("token", JSON.stringify(token));
   };
 
   const getToken = () => {
-    return sessionStorage.getItem("token");
+    return JSON.parse(sessionStorage.getItem("token") || "null");
   };
 
   const checkExpiredToken = () => {
-    const token = getToken();
+    const token = getToken().access;
     if (!token) {
       return true;
     }
@@ -30,7 +30,7 @@ export default function useToken() {
     try {
       const response = await fetch(import.meta.env.VITE_API + "/auth/refresh", {
         method: "POST",
-        body: JSON.stringify({ refresh_token: getToken() }),
+        body: JSON.stringify({ refresh_token: getToken().refresh }),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -53,10 +53,10 @@ export default function useToken() {
         sessionStorage.removeItem("token");
         Notify.error("Token Kadaluarsa");
       }
-      const response = await fetch(import.meta.env.VITE_API + "/auth/saya", {
+      const response = await fetch(import.meta.env.VITE_API + "/auth/whoami", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getToken().access}`,
         },
       });
       const data = await response.json();

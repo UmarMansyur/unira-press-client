@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 
-const useSession = defineStore({
+export const useSession = defineStore({
   id: "session",
-  state: () => ({
+  state: () => <any>({
     user: null,
   }),
   getters: {
-    isLoggedIn: (state) => !!state.user,
+    getUser: (state) => state.user,
   },
   actions: {
     setUser(user: any) {
@@ -17,5 +17,3 @@ const useSession = defineStore({
     },
   },
 });
-
-export default useSession;
