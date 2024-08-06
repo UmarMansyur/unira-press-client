@@ -12,7 +12,7 @@
     <template v-else-if="!addClick && !detail && !ubahClick">
       <div class="row">
         <div class="col-auto mb-3">
-          <select class="form-select">
+          <select class="form-select" @change="changeLimit($event)">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -76,10 +76,12 @@
             type="text"
             class="form-control"
             placeholder="Cari pengajuan"
+            v-model="query"
+            @change="search"
           />
         </div>
         <div class="col-auto ms-auto">
-          <button type="button" class="btn btn-blue" @click="setClick(true)">
+          <button type="button" class="btn btn-blue" @click="setClick(true)" v-if="session.getUser?.role !== 'admin'">
             <i class="bx bx-plus-circle"></i> Tambah Pengajuan
           </button>
         </div>
@@ -108,8 +110,25 @@
                     {{ item.author }}
                   </td>
                   <td class="text-center">
-                    <span class="badge bg-info font-size-14 rounded-pill">
-                      <span>AKTIF</span>
+                    <span class="badge bg-info font-size-14 rounded-pill" v-if="item.status_publish === 'Menunggu'">
+                      <span>
+                        {{ item.status_publish }}
+                      </span>
+                    </span>
+                    <span class="badge bg-warning font-size-14 rounded-pill" v-if="item.status_publish === 'Direview'">
+                      <span>
+                        {{ item.status_publish }}
+                      </span>
+                    </span>
+                    <span class="badge bg-danger font-size-14 rounded-pill" v-if="item.status_publish === 'Ditolak'">
+                      <span>
+                        {{ item.status_publish }}
+                      </span>
+                    </span>
+                    <span class="badge bg-success font-size-14 rounded-pill" v-if="item.status_publish === 'Diterbitkan'">
+                      <span>
+                        {{ item.status_publish }}
+                      </span>
                     </span>
                   </td>
                   <td class="text-center">
@@ -153,9 +172,10 @@ import usePagination from "../composables/pagination";
 import { disableLoader, enableLoader } from "../helpers/event";
 import useApi from "../composables/api";
 import EditPengajuan from "./EditPengajuan.vue";
+import { useSession } from "../stores/session";
 
 const query = ref<string>("");
-
+const session = useSession();
 const ubahClick = ref<boolean>(false);
 
 const dataDetail = ref<any>({});
@@ -214,13 +234,16 @@ const setClick = async (value: boolean) => {
   addClick.value = value;
 };
 
-const { getResource } = useApi();
+const { getResource, putResource } = useApi();
 
 const clickedMore = async (id: string) => {
   detail.value = true;
   const response = await getResource('/pengajuan/' + id);
   if (response) {
     detailData.value = response.data;
+    if(detailData.value && detailData.value.status_publish === 'Menunggu' && session.getUser?.role === 'admin') {
+      await putResource('/pengajuan/' + id, { status_publish: 'Direview' });
+    }
   }
 };
 </script>

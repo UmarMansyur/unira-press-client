@@ -294,13 +294,6 @@ const getInput = (value: string) => {
   sinopsis.value = value;
 };
 
-const file = ref<any>(null);
-
-// watch(computedDatas, (value) => {
-//   if (value) {
-
-//   }
-// });
 
 const schema = yup.object().shape({
   title: yup.string().required(),

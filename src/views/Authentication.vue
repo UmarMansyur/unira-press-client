@@ -151,7 +151,7 @@ const tryLogin = async () => {
     const response = await result.json();
     if (response.data) {
       await setToken(response.data);
-      router.push("/");
+      router.push("/beranda");
     }
     if (!result.ok) {
       throw new Error(response.message);

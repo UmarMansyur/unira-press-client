@@ -21,12 +21,27 @@
           type="button"
           class="btn btn-red me-2"
           @click="cancelSubmission(datas.id)"
+          v-if="
+            session.getUser?.role !== 'admin' &&
+            (datas.status_publish !== 'Diterbitkan' ||
+              datas.status_publish !== 'Ditolak')
+          "
         >
           <i class="bx bx-x me-1"></i> Batalkan Pengajuan
         </button>
-        <button type="button" class="btn btn-info-2 me-2" @click="ubahClick">
+        <button
+          type="button"
+          class="btn btn-info-2 me-2"
+          @click="ubahClick"
+          v-if="
+            session.getUser?.role !== 'admin' &&
+            (datas.status_publish !== 'Diterbitkan' ||
+              datas.status_publish !== 'Ditolak')
+          "
+        >
           <i class="bx bx-pencil me-1"></i> Edit
         </button>
+
         <button
           type="button"
           class="btn btn-secondary"
@@ -115,9 +130,7 @@
       </div>
       <div class="col-sm-3">
         <h5 class="font-size-15">Jumlah Halaman:</h5>
-        <p>
-          {{ datas.page_count === 0 ? "-" : datas.page_count }} Halaman
-        </p>
+        <p>{{ datas.page_count === 0 ? "-" : datas.page_count }} Halaman</p>
       </div>
       <div class="col-sm-3">
         <h5 class="font-size-15">Ukuran Buku:</h5>
@@ -166,10 +179,15 @@
                 <i class="bx bx-dots-vertical-rounded font-size-20"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item" href="javascript:void()" @click="updateFileRevisi2(file.id)">Edit</a>
                 <a
                   class="dropdown-item"
-                  href="javascript:void()"
+                  href="javascript:void(0)"
+                  @click="updateFileRevisi2(file.id)"
+                  >Edit</a
+                >
+                <a
+                  class="dropdown-item"
+                  href="javascript:void(0)"
                   @click="deleteFile(file.id)"
                   >Hapus</a
                 >
@@ -189,7 +207,7 @@
               <div class="flex-grow-1">
                 <h5 class="font-size-15 mb-1 text-truncate">
                   <a
-                    href="javascript:void()"
+                    href="javascript:void(0)"
                     class="text-dark"
                     @click="download(file.file)"
                     >{{ file.file }}</a
@@ -225,6 +243,53 @@
       </div>
     </div>
     <hr />
+    <div
+      v-if="
+        (datas.status_publish === 'Menunggu' ||
+          datas.status_publish === 'Revisi') &&
+        session.getUser?.role === 'admin'
+      "
+    >
+      <h5 class="font-size-15">Status Pengajuan:</h5>
+      <div class="alert alert-warning" role="alert">
+        <i class="bx bx-info-circle me-1"></i> Jika anda menolak pengajuan, maka
+        anda wajib memberikan komentar alasan penolakan!
+      </div>
+      <div class="d-flex">
+        <button
+          type="button"
+          class="btn btn-red me-2 w-50"
+          data-bs-toggle="modal"
+          data-bs-target="#tolak-pengajuan"
+        >
+          <i class="bx bx-x me-1"></i> Tolak Pengajuan
+        </button>
+        <button
+          type="button"
+          class="btn btn-success-2 me-2 w-50"
+          @click="setujuPengajuan(datas.id)"
+        >
+          <i class="bx bx-check-double me-1"></i> Setujui Pengajuan
+        </button>
+      </div>
+      <hr />
+    </div>
+    <Modal modalId="tolak-pengajuan" modalClass="modal-lg" title="Tolak Pengajuan">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="alasan" class="form-label">Alasan Penolakan: </label>
+          <textarea class="form-control" id="alasan" rows="5" v-model="alasanComment"></textarea>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bx bx-x me-1"></i> Batal
+          </button>
+          <button type="button" class="btn btn-red" @click="tolakPengajuan(datas.id)">
+            <i class="bx bx-x me-1"></i> Tolak Pengajuan
+          </button>
+        </div>
+      </div>
+    </Modal>
     <div class="row justify-content-center">
       <h5 class="font-size-15">
         <div class="col-12">
@@ -241,26 +306,47 @@
                   <div
                     class="avatar-title rounded-circle bg-light text-primary"
                   >
-                    <img :src="comment.isClient === true ? session.getUser?.thumbnail : 'https://api.unira.ac.id/' + datas.thumbnail" alt="" class="rounded-circle avatar-sm" />
+                    <img
+                      :src="
+                        comment.thumbnail
+                      "
+                      alt=""
+                      class="rounded-circle avatar-sm"
+                    />
                   </div>
                 </div>
               </div>
-              
+
               <div class="flex-grow-1">
                 <h5 class="font-size-14 mb-1">
-                  {{ comment.isClient === true ? session.getUser?.username : "Reviewer" }}
+                 
+                  {{
+                    comment.nama
+                  }}
                   <small class="text-muted float-end">
-                    {{ new Date(comment.createdAt).toLocaleDateString("id-ID", {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    }) }}
+                    {{
+                      new Date(comment.createdAt).toLocaleDateString("id-ID", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    }}
                   </small>
-                  <a href="javascript:void()" class="text-muted float-end me-2" @click="hapusKomentar(comment.id)">
+                  <a
+                    href="javascript:void(0);"
+                    class="text-muted float-end me-2"
+                    @click="hapusKomentar(comment.id)"
+                    v-if="session.getUser?.username === comment.nomor_induk"
+                  >
                     <i class="bx bx-trash"></i>
                   </a>
-                  <a href="javascript:void()" class="text-muted float-end me-2" @click="editKomentar(comment.id)">
+                  <a
+                    href="javascript:void(0);"
+                    class="text-muted float-end me-2"
+                    @click="editKomentar(comment.id)"
+                    v-if="session.getUser?.username === comment.nomor_induk"
+                  >
                     <i class="bx bx-pencil"></i>
                   </a>
                 </h5>
@@ -274,7 +360,6 @@
             <div class="text-center">
               <h6 class="text-muted font-size-16">Belum ada komentar</h6>
             </div>
-
           </div>
         </div>
       </div>
@@ -286,13 +371,11 @@
           v-model="comment"
           @keydown.enter="sendComment"
         ></textarea>
-        <button class="btn btn-blue mt-3" type="button" @click="sendComment">
+        <button class="btn btn-blue mt-3" type="button" @click="sendComment" v-if="datas.status_publish !== 'Diterbitkan' && datas.status_publish !== 'Ditolak'">
           <i class="bx bx-send"></i> Kirim
         </button>
-
       </div>
     </div>
-
   </div>
 </template>
 
@@ -303,6 +386,7 @@ import { disableLoader, enableLoader } from "../helpers/event";
 import Sweet from "../helpers/sweetalert2";
 import Notify from "../helpers/notify";
 import { useSession } from "../stores/session";
+import Modal from "../components/Modal.vue";
 
 const session = useSession();
 
@@ -354,9 +438,15 @@ watch(computedProps, async (value) => {
   }
 });
 
-const { deleteResource, postResourceFormData, getResource, postResource, putResource } = useApi();
+const {
+  deleteResource,
+  postResourceFormData,
+  getResource,
+  postResource,
+  putResource,
+} = useApi();
 
-const emits = defineEmits(["close", 'ubahClick']);
+const emits = defineEmits(["close", "ubahClick"]);
 
 const download = (path: string) => {
   window.open(import.meta.env.VITE_API + "/uploads/" + path, "_blank");
@@ -416,7 +506,9 @@ const getFileRevisi2 = async (e: any) => {
     return;
   }
   const file = e.target.files[0];
-  const path = editFileId.value ? "/file-revisi/" + editFileId.value : "/file-revisi";
+  const path = editFileId.value
+    ? "/file-revisi/" + editFileId.value
+    : "/file-revisi";
   const response = await postResourceFormData(path, {
     pengajuan_id: props.data.id,
     file: file,
@@ -453,13 +545,11 @@ const hapusKomentar = async (id: string) => {
   disableLoader();
 };
 
-
 const sendComment = async () => {
   if (!comment.value) {
     Notify.error("Komentar tidak boleh kosong");
     return;
   }
-
 
   if (commentId.value) {
     const response = await putResource("/comment/" + commentId.value, {
@@ -474,14 +564,19 @@ const sendComment = async () => {
     return;
   }
 
-
-
   const response = await postResource("/comment", {
-    nomor_induk: datas.value.nomor_induk,
+    nomor_induk: session.getUser?.username,
     isClient: session.getUser?.role === "client",
-    pengajuan_id: props.data.id,
+    pengajuan_id: datas.value.id,
     comment: comment.value,
   });
+
+  if(datas.value.status_publish === "Menunggu" && session.getUser?.role === "admin") {
+    await putResource(`/pengajuan/${datas.value.id}`, {
+      status_publish: "Direview",
+    });
+  }
+
   if (response) {
     Notify.success("Komentar berhasil dikirim");
     await refreshData(props.data.id);
@@ -494,7 +589,42 @@ const updateFileRevisi2 = async (id: string) => {
   document.getElementById("file-upload")?.click();
 };
 
+const setujuPengajuan = async (id: string) => {
+  Sweet.confirm(
+    "Apakah anda yakin ingin menyetujui pengajuan ini?",
+    async () => {
+      enableLoader();
+      await putResource(`/pengajuan/${id}`, {
+        status_publish: "Diterbitkan",
+      });
+      Notify.success("Pengajuan berhasil disetujui");
+      await refreshData(props.data.id);
+      disableLoader();
+    }
+  );
+};
 
+const alasanComment = ref<string>("");
+const tolakPengajuan = async (id: string) => {
+  Sweet.confirm(
+    "Apakah anda yakin ingin menolak pengajuan ini?",
+    async () => {
+      enableLoader();
+      await putResource(`/pengajuan/${id}`, {
+        status_publish: "Ditolak",
+      });
+      await postResource("/comment", {
+        nomor_induk: session.getUser?.id,
+        isClient: session.getUser?.role === "client",
+        pengajuan_id: props.data.id,
+        comment: alasanComment.value,
+      });
+      Notify.success("Pengajuan berhasil ditolak");
+      await refreshData(props.data.id);
+      disableLoader();
+    }
+  );
+};
 
 const ubahClick = () => {
   emits("ubahClick", {
@@ -502,5 +632,4 @@ const ubahClick = () => {
     data: datas.value,
   });
 };
-
 </script>

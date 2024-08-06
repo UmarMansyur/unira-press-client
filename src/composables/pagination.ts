@@ -65,7 +65,7 @@ export default function usePagination(path: any, q?:any ,query?: any) {
 
   async function fetchData() {
     let query = [];
-    if(q.value){
+    if(q !== '' && q.value !== "") {
       query.push(`${path}${q.value}&page=${currentPage.value}&limit=${limitPage.value}`);
     } else {
       query.push(`${path}?page=${currentPage.value}&limit=${limitPage.value}`);
@@ -83,7 +83,7 @@ export default function usePagination(path: any, q?:any ,query?: any) {
 
   async function search() {
     let search = [];
-    if(q != '' && q.value){
+    if(q !== '' && q.value !== "") {
       search.push(`${path}${q.value}&page=${currentPage.value}&limit=${limitPage.value}&search=${query.value}`);
     } else {
       search.push(`${path}?page=${currentPage.value}&limit=${limitPage.value}&search=${query.value}`);

@@ -1,8 +1,5 @@
 @import url(https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&amp;display=swap);
-body {
-  /* font-family: Noto Sans,Segoe UI,IBM Plex Sans,Tahoma,Geneva,Verdana,sans-serif !important; */
-  font-family: 'IBM Plex Sans', sans-serif !important;
-}
+
 
 [data-bs-theme=dark] .bg-dark {
   background-color: var(--bs-sidebar-dark-bg) !important
@@ -13,7 +10,7 @@ body {
   top: 0;
   right: 0;
   left: 0;
-  z-index: 1054;
+  z-index: 104;
   background-color: var(--bs-header-bg);
   border-bottom: 1px solid var(--bs-border-color)
 }
@@ -2182,6 +2179,76 @@ body[data-layout=horizontal][data-layout-size=boxed] .navbar-header {
   border-color: #FFC107 !important;
   color: #fff !important;
   box-shadow: 0 0 10px 0 rgba(255, 193, 7, 0.5);
+}
+
+#information {
+  z-index: 1000 !important;
+  background-color: #102c57;
+  border-bottom: 4px solid #f1c40f;
+}
+
+#navbar {
+  padding: 1rem 2rem;
+  z-index: 1000 !important;
+  background-color: #102c57;
+}
+
+.text-blue {
+  color: #102c57 !important;
+}
+
+#top-page .title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white !important;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.title h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+}
+
+#background-landing {
+  display: flex;
+  flex-direction: column;
+  background-image: url("/assets/images/unira.png");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(16, 44, 87, 0.342);
+  }
+}
+
+.text-warning-2 {
+  color: #FFC107 !important;
+}
+
+.border-bottom-warning {
+  border-bottom: 4px solid #f1c40f;
+}
+
+.border-top-warning {
+  border-top: 4px solid #f1c40f;
+}
+
+.title-page {
+  color: #102c57;
+  border-bottom: 8px solid #f1c40f;
+  display: inline-block;
+  padding-inline: 2rem;
 }
 
 .btn-warning-2:hover {

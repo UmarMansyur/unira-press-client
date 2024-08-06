@@ -313,8 +313,6 @@ const saveData = async() => {
 
   const response = await postResource('/pengajuan', data);
   if(response.data) {
-    const formData = new FormData();
-
     await postResourceFormData(`/file-revisi`, {
       file: file.value,
       pengajuan_id: response.data.id,

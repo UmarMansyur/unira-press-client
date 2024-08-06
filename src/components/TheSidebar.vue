@@ -16,7 +16,7 @@
       </div>
     </li>
     <li>
-      <RouterLink to="/" class="waves-effect">
+      <RouterLink to="/beranda" class="waves-effect">
         <i data-feather="home"></i>
         <span data-key="t-horizontal">Beranda</span>
       </RouterLink>
@@ -27,7 +27,7 @@
         <span data-key="t-horizontal">Pengajuan Penerbitan</span>
       </RouterLink>
     </li>
-    <li class="">
+    <li class="" v-if="session.getUser?.role === 'admin'">
       <a href="javascript: void(0);" class="has-arrow waves-effect">
         <i data-feather="settings"></i>
         <span data-key="t-apps">Pengaturan</span>
