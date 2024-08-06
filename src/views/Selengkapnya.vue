@@ -23,7 +23,7 @@
           @click="cancelSubmission(datas.id)"
           v-if="
             session.getUser?.role !== 'admin' &&
-            (datas.status_publish !== 'Diterbitkan' ||
+            (datas.status_publish !== 'Diterbitkan' &&
               datas.status_publish !== 'Ditolak')
           "
         >
@@ -35,7 +35,7 @@
           @click="ubahClick"
           v-if="
             session.getUser?.role !== 'admin' &&
-            (datas.status_publish !== 'Diterbitkan' ||
+            (datas.status_publish !== 'Diterbitkan' &&
               datas.status_publish !== 'Ditolak')
           "
         >
@@ -97,7 +97,7 @@
           <button class="btn btn-info btn-sm" @click="download2(datas.cover)">
             <i class="bx bx-download me-2"></i>Download
           </button>
-          <button class="btn btn-warning-2 btn-sm" @click="changeImage">
+          <button class="btn btn-warning-2 btn-sm" @click="changeImage" v-if="session.getUser?.role !== 'admin' && (datas.status_publish !== 'Diterbitkan' && datas.status_publish !== 'Ditolak')">
             <i class="bx bx-pencil me-2"></i> Ganti
           </button>
           <input
@@ -155,7 +155,7 @@
         <h5 class="font-size-15">File:</h5>
       </div>
       <div class="col-xl-6">
-        <button class="btn btn-blue btn-sm float-end" @click="uploadFileRevisi">
+        <button class="btn btn-blue btn-sm float-end" @click="uploadFileRevisi" v-if="session.getUser?.role !== 'admin' && (datas.status_publish !== 'Diterbitkan' && datas.status_publish !== 'Ditolak')">
           <i class="bx bx-upload me-2"></i>Upload File
         </button>
         <input
@@ -246,7 +246,7 @@
     <div
       v-if="
         (datas.status_publish === 'Menunggu' ||
-          datas.status_publish === 'Revisi') &&
+          datas.status_publish === 'Direview') &&
         session.getUser?.role === 'admin'
       "
     >
@@ -546,6 +546,9 @@ const hapusKomentar = async (id: string) => {
 };
 
 const sendComment = async () => {
+  if(datas.value.status_publish === "Diterbitkan" || datas.value.status_publish === "Ditolak") {
+    return;
+  }
   if (!comment.value) {
     Notify.error("Komentar tidak boleh kosong");
     return;

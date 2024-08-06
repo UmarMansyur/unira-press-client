@@ -160,7 +160,7 @@
               <div class="col-sm-6">
                 <div class="mb-3">
                   <label for="file" class="form-label"><sup class="text-danger">*</sup>Cover: </label>
-                  <input type="file" class="form-control" @change="getFile"/>
+                  <input type="file" class="form-control" @change="getFileCover"/>
                 </div>
               </div>
               <div class="col-sm-6">
@@ -274,6 +274,9 @@ const { value: mediaId } = useField<string>("mediaId");
 const { value: weight } = useField<string>("weight");
 const { value: width } = useField<string>("width");
 
+const getFileCover = (e: any) => {
+  cover.value = e.target.files[0];
+};
 
 const session = useSession();
 
@@ -288,6 +291,8 @@ const kategoris = async () => {
 onMounted(async () => {
   await kategoris();
 });
+
+const cover = ref<any>(null);
 
 const saveData = async() => {
   const data: any = {
@@ -319,7 +324,7 @@ const saveData = async() => {
     });
     
     await postResourceFormData(`/pengajuan/cover/${response.data.id}`, {
-      file: file.value,
+      file: cover.value,
     });
 
     Notify.success('Data berhasil disimpan');
