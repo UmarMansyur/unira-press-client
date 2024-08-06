@@ -1,10 +1,13 @@
 import { disableLoader, enableLoader } from "../helpers/event";
 import Notify from "../helpers/notify";
+import useToken from "./token";
 
 export default function useApi() {
+  const { checkExpiredToken } = useToken();
   const tryFetch = async (url: string, method: string, body?: any) => {
     try {
       enableLoader();
+      await checkExpiredToken();
       const response = await fetch(import.meta.env.VITE_API + url, {
         method,
         body: JSON.stringify(body),

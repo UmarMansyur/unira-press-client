@@ -79,6 +79,7 @@ export default function useToken() {
     setToken,
     getToken,
     decodeToken,
-    refreshToken
+    refreshToken,
+    checkExpiredToken
   };
 }

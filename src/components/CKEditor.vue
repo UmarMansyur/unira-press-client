@@ -3,7 +3,7 @@ declare const ClassicEditor: any;
 </script>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, shallowRef, watch, computed } from "vue";
+import { onMounted, onBeforeUnmount, ref, shallowRef, watch } from "vue";
 import UploadAdapter from "../helpers/UploadAdapter";
 
 function CustomUploadAdapterPlugin(editor: any) {
