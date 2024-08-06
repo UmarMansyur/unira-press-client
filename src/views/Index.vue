@@ -211,7 +211,10 @@ const setDetail = async (id: number) => {
   detailData.value = news.value.find((item: any) => item.id === id);
 };
 
-const books = ref<any>({});
+const books = ref<any>({
+  rilis_new: [],
+  rilis_populer: [],
+});
 const loadResource = async () => {
   enableLoader();
   const response = await fetch(import.meta.env.VITE_API + "/landing");
@@ -259,4 +262,6 @@ onMounted(async () => {
   height: 100%;
   object-fit: cover;
 }
+
+
 </style>
