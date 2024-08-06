@@ -44,8 +44,8 @@
             <nav class="navbar navbar-dark navbar-expand-lg text-white">
               <div class="container-fluid text-white">
                 <a class="d-flex gap-2 align-items-center text-white fw-bold display-6 py-2" href="#">
-                  <img src="/assets/images/logo.png" alt="logo" style="width: 40px" />
-                  <h4 class="mb-0 text-white font-size-20">UNIRA PRESS</h4>
+                  <img src="/assets/images/logo.png" alt="logo" style="width: 25px" />
+                  <h4 class="mb-0 text-white font-size-24">UNIRA PRESS</h4>
                 </a>
                 <button class="btn btn-warning btn-sm" type="button" data-bs-toggle="collapse"
                   data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
