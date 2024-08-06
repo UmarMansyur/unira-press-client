@@ -8,8 +8,15 @@
           Tentang Kami
         </h1>
         <div class="row border-top-warning">
-          <div class="col-md-12 pt-3 text-start">
+          <div class="col-md-12 pt-3 text-start" v-if="tentangKami">
             <div v-html="tentangKami"></div>
+          </div>
+          <div class="col-md-12 pt-3 text-start" v-else>
+            <div class="text-center">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -30,9 +37,7 @@ const loadData = async () => {
   const data = await response.json();
   disableLoader();
   tentangKami.value = data.data.content;
-}
-
-
+};
 
 onMounted(async () => {
   await loadData();

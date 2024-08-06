@@ -17,6 +17,10 @@
                 </p>
               </a>
             </div>
+            <div class="col-md-12" v-if="books.rilis_new.length === 0">
+              <p class="text-muted">Data tidak ditemukan</p>
+
+            </div>
           </div>
         </div>
         <div class="text-start mb-4 overflow-hidden">
@@ -34,6 +38,9 @@
                 </p>
               </a>
             </div>
+            <div class="col-md-12" v-if="books.rilis_populer.length === 0">
+              <p class="text-muted">Data tidak ditemukan</p>
+              </div>
           </div>
         </div>
         <div class="row">
