@@ -9,9 +9,9 @@
             Katalog
           </h1>
           <div class="row border-top-warning justify-content-center">
-            <div class="col-auto mt-3">
+            <div class="col-auto px-1 mt-1">
               <span
-                class="badge bg-blue font-size-14 py-1 rounded-pill"
+                class="badge bg-blue font-size-10 py-1 rounded-pill"
                 style="cursor: pointer"
                 @click="filterKatalog('')"
                 :class="select === '' ? 'bg-blue' : 'bg-warning-2'"
@@ -20,12 +20,12 @@
               </span>
             </div>
             <div
-              class="col-auto mt-3"
+              class="col-auto px-0 mt-1"
               v-for="index in katalogs.kategori"
               :key="index.id"
             >
               <span
-                class="badge font-size-14 py-1 rounded-pill"
+                class="badge font-size-10 mx-1 py-1 rounded-pill"
                 style="cursor: pointer"
                 @click="filterKatalog(index.id)"
                 :class="index.id === select ? 'bg-blue' : 'bg-warning-2'"
