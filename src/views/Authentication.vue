@@ -60,7 +60,12 @@
               placeholder="Password"
               v-model="password"
             />
-            <button class="btn btn-light-outline border" type="button">
+            <button
+              class="btn btn-light-outline border"
+              type="button"
+              id="btn-password"
+              @click="togglePassword"
+            >
               <i class="mdi mdi-eye align-middle"></i>
             </button>
           </div>
@@ -111,7 +116,6 @@ import router from "../routes";
 
 const { setToken } = useToken();
 
-
 const schema = yup.object().shape({
   username: yup.string().required(),
   role: yup.string().required(),
@@ -158,6 +162,20 @@ const tryLogin = async () => {
     }
   } catch (error: any) {
     Notify.error(error.message);
+  }
+};
+
+const togglePassword = () => {
+  const password = document.getElementById("password") as HTMLInputElement;
+  const btnPassword = document.getElementById(
+    "btn-password"
+  ) as HTMLButtonElement;
+  if (password.type === "password") {
+    password.type = "text";
+    btnPassword.innerHTML = '<i class="mdi mdi-eye-off align-middle"></i>';
+  } else {
+    password.type = "password";
+    btnPassword.innerHTML = '<i class="mdi mdi-eye align-middle"></i>';
   }
 };
 </script>
