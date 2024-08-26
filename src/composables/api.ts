@@ -14,7 +14,7 @@ export default function useApi() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(sessionStorage.getItem("token")!).token
+            JSON.parse(sessionStorage.getItem("token")!).access
           }`,
         },
       });
@@ -86,7 +86,7 @@ export default function useApi() {
         method,
         headers: {
           Authorization: `Bearer ${
-            JSON.parse(sessionStorage.getItem("token") || "").token
+            JSON.parse(sessionStorage.getItem("token") || "").access
           }`,
         },
         body: formData,

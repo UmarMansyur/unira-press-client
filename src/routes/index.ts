@@ -63,10 +63,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/News.vue"),
   },
   {
-    path: "/pengajuan",
-    name: "Submission",
+    path: "/pengajuan-buku-baru",
+    name: "Pengajuan Buku Baru",
     meta: {
-      title: "Pengajuan",
+      title: "Pengajuan Buku Baru",
     },
     component: () => import("../views/Submission.vue"),
   },

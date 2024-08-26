@@ -12,7 +12,7 @@ export default function useToken() {
 
   const getToken = () => {
     const token = JSON.parse(sessionStorage.getItem("token") || "null");
-    return token.token;
+    return token.access;
   };
 
   const checkExpiredToken = async () => {
@@ -42,8 +42,8 @@ export default function useToken() {
       if (!response.ok) {
         throw new Error(data.message || "Gagal refresh token");
       }
-      setToken(data.data.token);
-      return data.data.token;
+      setToken(data.data.access);
+      return data.data.access;
     } catch (error: any) {
       Notify.error(error.message);
     }

@@ -11,7 +11,7 @@
           />
         </div>
         <h5 class="font-size-16 mt-3 mb-1 text-white" id="sidebar-name">
-          {{ session.getUser?.username }}
+          {{ session.getUser?.nama }}
         </h5>
       </div>
     </li>
@@ -28,7 +28,7 @@
       </RouterLink>
     </li>
     <li>
-      <RouterLink to="/pengajuan" class="waves-effect">
+      <RouterLink to="/pengajuan-buku-baru" class="waves-effect">
         <i data-feather="book"></i>
         <span data-key="t-horizontal">Pengajuan Buku Baru</span>
       </RouterLink>
