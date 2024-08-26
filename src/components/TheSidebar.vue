@@ -1,7 +1,7 @@
 <template>
   <ul class="metismenu list-unstyled" id="side-menu">
     <li>
-      <div class="text-center mt-4 mb-5" id="wrapper-sidebar-img">
+      <div class="text-center mt-4 mb-3" id="wrapper-sidebar-img">
         <div class="p-1 d-inline-flex bg-light rounded-circle">
           <img
             :src="`${session.getUser?.thumbnail}`"

@@ -71,6 +71,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/Submission.vue"),
   },
   {
+    path: "/pengajuan-isbn",
+    name: "Pengajuan ISBN",
+    meta: {
+      title: "Pengajuan Buku Baru",
+    },
+    component: () => import("../views/SubmissionISBN.vue"),
+  },
+  {
     path: "/kategori-buku",
     name: "Kategori buku",
     meta: {
