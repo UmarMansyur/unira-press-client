@@ -11,11 +11,12 @@ export default function useToken() {
   };
 
   const getToken = () => {
-    return JSON.parse(sessionStorage.getItem("token") || "null");
+    const token = JSON.parse(sessionStorage.getItem("token") || "null");
+    return token.token;
   };
 
   const checkExpiredToken = async () => {
-    const token = getToken().access;
+    const token = getToken();
     if (!token) {
       Notify.error("Token tidak ditemukan");
       return;
@@ -61,7 +62,7 @@ export default function useToken() {
       const response = await fetch(import.meta.env.VITE_API + "/auth/whoami", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${getToken().access}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       });
       const data = await response.json();

@@ -10,10 +10,18 @@
       id="auth-pattern"
     >
       <div class="wrapper">
-        <h3 class="fw-bold">Welcome Back!</h3>
+        <h3 class="fw-bold">Selamat Datang Kembali!</h3>
         <p class="text-muted text-primary text-warning">
-          Silahkan login untuk melanjutkan!
+          Silahkan login untuk melanjutkan! <br />
         </p>
+        <div class="alert alert-info p-3 text-justify">
+          <p class="text-muted m-0 text-primary text-warning p-0">
+            <span>
+              Jika anda memiliki akun di SIMAT, silahkan login dengan NIS/NPM
+              dan password yang anda gunakan di SIMAT.
+            </span>
+          </p>
+        </div>
         <div class="my-4">
           <label for="username" class="d-none">NIS/NPM</label>
           <div class="input-group">
@@ -27,24 +35,6 @@
               placeholder="NIS/NPM"
               v-model="username"
             />
-          </div>
-        </div>
-        <div class="my-4">
-          <label for="username" class="d-none">Anda Login sebagai: </label>
-          <div class="input-group">
-            <span class="input-group-text" id="user-addon"
-              ><i class="bx bxs-user-account"></i>
-            </span>
-            <select
-              class="form-select"
-              id="role"
-              placeholder="Pilih Role"
-              v-model="role"
-            >
-              <option value="" disabled>Level Akses</option>
-              <option value="admin">Administrator</option>
-              <option value="client">Pengguna</option>
-            </select>
           </div>
         </div>
         <div class="mt-3">
@@ -70,7 +60,6 @@
             </button>
           </div>
         </div>
-
         <div class="my-2">
           <div class="my-3 d-flex justify-content-between">
             <div class="form-check">
@@ -102,6 +91,12 @@
             </button>
           </div>
         </div>
+        <div class="mt-4 text-center">
+          <p class="text-muted" style="font-size: 14px">
+            Belum punya akun?
+            <a href="/register" class="text-primary-2 fw-bold">Daftar</a>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -113,12 +108,12 @@ import * as yup from "yup";
 import Notify from "../helpers/notify";
 import useToken from "../composables/token";
 import router from "../routes";
+import { disableLoader, enableLoader } from "../helpers/event";
 
 const { setToken } = useToken();
 
 const schema = yup.object().shape({
   username: yup.string().required(),
-  role: yup.string().required(),
   password: yup.string().required(),
 });
 
@@ -126,24 +121,20 @@ const { meta } = useForm({
   validationSchema: schema,
   initialValues: {
     username: "",
-    role: "",
     password: "",
   },
 });
 
 const { value: username } = useField<string>("username");
-const { value: role } = useField<string>("role");
 const { value: password } = useField<string>("password");
 
 const tryLogin = async () => {
   try {
+    enableLoader();
     const data: any = {
       username: username.value,
       password: password.value,
     };
-    if (role.value === "client") {
-      data.client = "client";
-    }
     const result = await fetch(import.meta.env.VITE_API + "/auth/login", {
       method: "POST",
       headers: {
@@ -152,8 +143,10 @@ const tryLogin = async () => {
       body: JSON.stringify(data),
     });
 
+    disableLoader();
     const response = await result.json();
     if (response.data) {
+      console.log(response.data);
       await setToken(response.data);
       router.push("/beranda");
     }
@@ -161,6 +154,7 @@ const tryLogin = async () => {
       throw new Error(response.message);
     }
   } catch (error: any) {
+    disableLoader();
     Notify.error(error.message);
   }
 };

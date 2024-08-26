@@ -48,7 +48,7 @@
               alt="Header Avatar"
             />
             <span class="d-none d-xl-inline-block ms-2 fw-medium"
-              >{{ session.getUser?.username }}</span
+              >{{ session.getUser?.nama }}</span
             >
           </button>
         </div>

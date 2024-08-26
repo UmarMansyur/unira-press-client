@@ -93,7 +93,9 @@
             </nav>
           </div>
           <div class="title text-center" style="width: 100%">
-            <h1>UNIRA PRESS</h1>
+            <h1>
+              {{ props.title ?? "UNIRA PRESS" }}
+            </h1>
           </div>
           <div class="w-100 text-center" id="information">
             <h6 class="py-3" id="browser-product">
@@ -107,7 +109,16 @@
       <slot></slot>
     </main>
     <footer class="bg-blue text-white text-center py-3">
-      <p class="mb-0">© 2024 - Universitas Madura</p>
+      <div class="container">
+        <div class="row text-start">
+          <div class="col-md-4">
+            <h5 class="mb-3 text-white">UNIRA PRESS</h5>
+            <p class="mb-0">Jl. Raya Bangkalan - Kamal KM. 11 Desa Kramat Kec. Kamal Kab. Bangkalan</p>
+            <p class="mb-0">Telp. (031) 309 2000</p>
+            <p class="mb-0">Email: unira-press@unira.ac.id</p>
+          </div>
+        </div>
+      </div>
     </footer>
   </div>
 </template>
@@ -118,6 +129,10 @@ import { onMounted } from "vue";
 onMounted(() => {
   document.body.style.fontFamily = "Poppins, sans-serif";
 });
+
+const props = defineProps<{
+  title: string;
+}>();
 </script>
 
 <style scoped lang="css">

@@ -27,10 +27,19 @@ const disableLoader = () => {
   document.getElementById('layer')!.classList.add('d-none');
 }
 
+const formatedDate = (date: any) => {
+  return new Date(date).toLocaleDateString('id-ID', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
 
 
 export {
   handlePassword,
+  formatedDate,
   enableLoader,
   disableLoader
 }

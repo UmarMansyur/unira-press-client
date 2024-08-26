@@ -12,6 +12,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/Home.vue"),
   },
   {
+    path: "/berita",
+    name: "Berita",
+    meta: {
+      title: "Berita",
+    },
+    component: () => import("../views/News.vue"),
+  },
+  {
     path: "/",
     name: "Landing Page",
     meta: {
@@ -63,6 +71,22 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/Submission.vue"),
   },
   {
+    path: "/kategori-buku",
+    name: "Kategori buku",
+    meta: {
+      title: "Kategori Buku",
+    },
+    component: () => import("../views/KategoriBuku.vue"),
+  },
+  {
+    path: "/manajemen-role",
+    name: "Manajemen Role",
+    meta: {
+      title: "Manajemen Role",
+    },
+    component: () => import("../views/Role.vue"),
+  },
+  {
     path: "/tentang-kami",
     name: "aboutme",
     meta: {
@@ -98,6 +122,9 @@ router.beforeEach(async (to, _, next) => {
   if (to.name !== "Login" && sessionStorage.getItem("token") !== null) {
     if(session.user === null) {
       const user = await decodeToken();
+      const role = user.UserPrivillege.map((item: any) => item.role.name);
+      delete user.UserPrivillege;
+      user.roles = role;
       session.setUser(user);
     }
     return next();

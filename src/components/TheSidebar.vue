@@ -22,12 +22,36 @@
       </RouterLink>
     </li>
     <li>
-      <RouterLink to="/pengajuan" class="waves-effect">
-        <i data-feather="check-circle"></i>
-        <span data-key="t-horizontal">Pengajuan Penerbitan</span>
+      <RouterLink to="/berita" class="waves-effect">
+        <i data-feather="globe"></i>
+        <span data-key="t-horizontal">Berita</span>
       </RouterLink>
     </li>
-    <li class="" v-if="session.getUser?.role === 'admin'">
+    <li>
+      <RouterLink to="/pengajuan" class="waves-effect">
+        <i data-feather="book"></i>
+        <span data-key="t-horizontal">Pengajuan Buku Baru</span>
+      </RouterLink>
+    </li>
+    <li>
+      <RouterLink to="/pengajuan" class="waves-effect">
+        <i data-feather="grid"></i>
+        <span data-key="t-horizontal">Pengajuan ISBN</span>
+      </RouterLink>
+    </li>
+    <li>
+      <RouterLink to="/kategori-buku" class="waves-effect">
+        <i data-feather="archive"></i>
+        <span data-key="t-horizontal">Kategori Buku</span>
+      </RouterLink>
+    </li>
+    <li>
+      <RouterLink to="/manajemen-role" class="waves-effect">
+        <i data-feather="users"></i>
+        <span data-key="t-horizontal">Manajemen Role</span>
+      </RouterLink>
+    </li>
+    <li class="" v-if="session.getUser?.roles.includes('Administrator')">
       <a href="javascript: void(0);" class="has-arrow waves-effect">
         <i data-feather="settings"></i>
         <span data-key="t-apps">Pengaturan</span>
@@ -55,6 +79,6 @@ const session = useSession();
 </script>
 <style scoped>
 li a {
-  font-size: 14px !important;
+  font-size: 13px !important;
 }
 </style>

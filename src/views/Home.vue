@@ -7,8 +7,8 @@
             <span class="badge bg-blue font-size-14">
               <span>AKTIF</span>
             </span>
-            <h4 class="mb-0 mt-2">{{ session.getUser?.id }}</h4>
-            <h3>{{ session.getUser?.username }}</h3>
+            <h4 class="mb-0 mt-2">{{ session.getUser?.username }}</h4>
+            <h3>{{ session.getUser?.nama }}</h3>
           </div>
           <div
             class="mt-3 d-flex flex-column justify-content-center align-items-center"
