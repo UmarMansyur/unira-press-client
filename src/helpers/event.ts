@@ -35,11 +35,26 @@ const formatedDate = (date: any) => {
   });
 }
 
+const toIDR = (value: any) => {
+  value = value.replace(/[^\d,]/g, "");
+  value = value.replace(/,/g, ".");
+  value = parseFloat(value).toFixed(3);
+  value = isNaN(value) ? 0 : value;
+  value = parseFloat(value).toLocaleString("id-ID");
+  return value;
+}
+
+const convertToNumber = (value: string) => {
+  return parseFloat(value.replace(/[^\d,]/g, "").replace(/,/g, "."))
+}
+
 
 
 export {
   handlePassword,
   formatedDate,
   enableLoader,
-  disableLoader
+  disableLoader,
+  toIDR,
+  convertToNumber
 }

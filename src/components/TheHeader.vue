@@ -4,7 +4,7 @@
       <div class="d-flex">
         <!-- LOGO -->
         <div class="navbar-brand-box">
-          <a href="index.html" class="logo logo-dark">
+          <RouterLink to="/beranda" class="logo logo-dark">
             <span class="logo-sm">
               <img src="/assets/images/logo.png" alt="" height="24" />
             </span>
@@ -12,9 +12,9 @@
               <img src="/assets/images/logo.png" alt="" height="24" />
               <span class="logo-txt">UNIRA PRESS</span>
             </span>
-          </a>
+          </RouterLink>
 
-          <a href="index.html" class="logo logo-light">
+          <RouterLink to="/beranda" class="logo logo-light">
             <span class="logo-sm">
               <img src="/assets/images/logo.png" alt="" height="24" />
             </span>
@@ -22,7 +22,7 @@
               <img src="/assets/images/logo.png" alt="" height="24" />
               <span class="logo-txt">UNIRA PRESS</span>
             </span>
-          </a>
+          </RouterLink>
         </div>
         <!-- Toogle Menu Sidebar -->
         <button

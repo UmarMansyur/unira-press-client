@@ -138,10 +138,15 @@ router.beforeEach(async (to, _, next) => {
   if (to.name !== "Login" && sessionStorage.getItem("token") !== null) {
     if(session.user === null) {
       const user = await decodeToken();
-      const role = user.UserPrivillege.map((item: any) => item.role.name);
-      delete user.UserPrivillege;
-      user.roles = role;
-      session.setUser(user);
+      if(user) {
+        const role = user.UserPrivillege.map((item: any) => item.role.name);
+        delete user.UserPrivillege;
+        user.roles = role;
+        session.setUser(user);
+      } else {
+        sessionStorage.clear();
+        return next({ name: "Login" });
+      }
     }
     return next();
   }

@@ -50,8 +50,7 @@ export default function useApi() {
       Notify.error(error.message);
       disableLoader();
     }
-  }
-
+  };
 
   const getResource = async (url: string) => {
     return await tryFetch(url, "GET");
@@ -59,9 +58,7 @@ export default function useApi() {
 
   const getResource2 = async (url: string) => {
     return await tryFetch2(url, "GET");
-  }
-
-
+  };
 
   const postResource = async (url: string, body: any) => {
     return await tryFetch(url, "POST", body);
@@ -75,7 +72,11 @@ export default function useApi() {
     return await tryFetch(url, "DELETE");
   };
 
-  const postResourceFormData = async (url: string, body: any, method = 'POST') => {
+  const postResourceFormData = async (
+    url: string,
+    body: any,
+    method = "POST"
+  ) => {
     try {
       enableLoader();
       const formData = new FormData();
@@ -103,10 +104,9 @@ export default function useApi() {
     }
   };
 
-
   return {
     getResource,
-    getResource2, 
+    getResource2,
     postResource,
     putResource,
     deleteResource,

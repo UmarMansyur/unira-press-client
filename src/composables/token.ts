@@ -10,19 +10,18 @@ export default function useToken() {
     sessionStorage.setItem("token", JSON.stringify(token));
   };
 
-  const getToken = () => {
-    const token = JSON.parse(sessionStorage.getItem("token") || "null");
-    return token.access;
+  const getToken = async () => {
+    return JSON.parse(sessionStorage.getItem("token") || "");
   };
 
   const checkExpiredToken = async () => {
-    const token = getToken();
+    const token = await getToken();
     if (!token) {
       Notify.error("Token tidak ditemukan");
       return;
     }
 
-    const decodedString = Base64.decode(token.split(".")[1]);
+    const decodedString = Base64.decode(token.access.split(".")[1]);
     const decoded = JSON.parse(decodedString);
     const expired = new Date(decoded.exp * 1000);
     if (new Date() > expired) {
@@ -34,15 +33,23 @@ export default function useToken() {
 
   const refreshToken = async () => {
     try {
+      const token = await getToken();
+      if (!token) {
+        Notify.error("Token tidak ditemukan");
+        return;
+      }
       const response = await fetch(import.meta.env.VITE_API + "/auth/refresh", {
         method: "POST",
-        body: JSON.stringify({ refresh_token: getToken().refresh }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refresh_token: token.refresh }),
       });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Gagal refresh token");
       }
-      setToken(data.data.access);
+      setToken(data.data);
       return data.data.access;
     } catch (error: any) {
       Notify.error(error.message);
@@ -59,10 +66,11 @@ export default function useToken() {
         sessionStorage.clear();
         Notify.error("Token Kadaluarsa");
       }
+      const token = await getToken();
       const response = await fetch(import.meta.env.VITE_API + "/auth/whoami", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${token.access}`,
         },
       });
       const data = await response.json();

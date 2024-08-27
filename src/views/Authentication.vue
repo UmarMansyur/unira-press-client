@@ -146,7 +146,6 @@ const tryLogin = async () => {
     disableLoader();
     const response = await result.json();
     if (response.data) {
-      console.log(response.data);
       await setToken(response.data);
       router.push("/beranda");
     }
