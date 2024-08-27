@@ -5,7 +5,11 @@
         <div class="col-md-6 mb-3">
           <div class="row">
             <div class="col-sm-auto col-6">
-              <select id="limit" class="form-select" @change="changeLimit($event)">
+              <select
+                id="limit"
+                class="form-select"
+                @change="changeLimit($event)"
+              >
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -13,11 +17,16 @@
               </select>
             </div>
             <div class="col-sm-auto col-6">
-              <select class="form-select" @change="changeStatusPengajuan($event)">
+              <select
+                class="form-select"
+                @change="changeStatusPengajuan($event)"
+              >
                 <option value="">Semua Status</option>
                 <option value="diproses">Diproses</option>
                 <option value="ditolak">Ditolak</option>
-                <option value="diterima_untuk_ditinjau">Diterima untuk Ditinjau</option>
+                <option value="diterima_untuk_ditinjau">
+                  Diterima untuk Ditinjau
+                </option>
                 <option value="revisi">Direvisi</option>
                 <option value="proses_cetak">Proses Cetak</option>
                 <option value="diterbitkan">Diterbitkan</option>
@@ -31,10 +40,25 @@
                 <option value="3">Ensiklopedia</option>
               </select>
             </div>
+            <div class="col-sm-auto col-6">
+              <select class="form-select" @change="changeTipePengajuan($event)">
+                <option value="">Semua Tipe Pengajuan</option>
+                <option value="ISBN">ISBN</option>
+                <option value="QRCBN">QRCBN</option>
+                <option value="hanya_cetak">Hanya Cetak</option>
+                <option value="hanya_publish">Hanya Publish Di Website</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="col-sm-3 ms-auto mb-3 col-6">
-          <input type="text" class="form-control" placeholder="Cari Buku" v-model="query" @change="search" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Cari Buku"
+            v-model="query"
+            @change="search"
+          />
         </div>
       </div>
       <div class="row">
@@ -571,15 +595,25 @@ useForm({
   },
 });
 
+const statusPengajuan = ref<string>("");
+const filterKategori = ref<string>("");
+const tipePengajuan = ref<string>("");
+
 const changeStatusPengajuan = (event: Event) => {
-  const target = event.target as HTMLSelectElement;
-  filter.value = "?filter="+target.value;
+  statusPengajuan.value = (event.target as HTMLSelectElement).value;
+  filter.value = "?filter=" + statusPengajuan.value + '&filter_kategori=' + filterKategori.value + '&filter_tipe=' + tipePengajuan.value;
   fetchData();
 };
 
 const changeKategori = (event: Event) => {
-  const target = event.target as HTMLSelectElement;
-  filter.value = "?filter="+target.value;
+  filterKategori.value = (event.target as HTMLSelectElement).value;
+  filter.value = "?filter=" + statusPengajuan.value + '&filter_kategori=' + filterKategori.value + '&filter_tipe=' + tipePengajuan.value;
+  fetchData();
+};
+
+const changeTipePengajuan = (event: Event) => {
+  tipePengajuan.value = (event.target as HTMLSelectElement).value;
+  filter.value = "?filter=" + statusPengajuan.value + '&filter_kategori=' + filterKategori.value + '&filter_tipe=' + tipePengajuan.value;
   fetchData();
 };
 
