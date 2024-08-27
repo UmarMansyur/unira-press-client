@@ -28,15 +28,15 @@
       </RouterLink>
     </li>
     <li>
-      <RouterLink to="/pengajuan-buku-baru" class="waves-effect">
-        <i data-feather="book"></i>
-        <span data-key="t-horizontal">Pengajuan Buku Baru</span>
+      <RouterLink to="/upload-naskah" class="waves-effect">
+        <i data-feather="upload"></i>
+        <span data-key="t-horizontal">Upload Naskah</span>
       </RouterLink>
     </li>
     <li>
-      <RouterLink to="/pengajuan" class="waves-effect">
-        <i data-feather="grid"></i>
-        <span data-key="t-horizontal">Pengajuan ISBN</span>
+      <RouterLink to="/naskah-saya" class="waves-effect">
+        <i data-feather="file-text"></i>
+        <span data-key="t-horizontal">Naskah Saya</span>
       </RouterLink>
     </li>
     <li>

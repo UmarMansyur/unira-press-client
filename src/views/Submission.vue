@@ -1,10 +1,9 @@
 <template>
   <TheParent>
-    <template v-if="!goToForm">
       <div class="row mt-3">
-        <div class="col-md-8">
+        <div class="col-md-6 mb-2">
           <div class="row">
-            <div class="col-sm-auto mb-3 col-6">
+            <div class="col-sm-auto col-6">
               <select id="limit" class="form-select">
                 <option value="10">10</option>
                 <option value="25">25</option>
@@ -12,13 +11,13 @@
                 <option value="100">100</option>
               </select>
             </div>
-            <div class="col-sm-auto mb-3 col-6">
+            <div class="col-sm-auto col-6">
               <select class="form-select">
                 <option value="">Semua Status</option>
                 <option value="1">Diterima</option>
               </select>
             </div>
-            <div class="col-sm-auto mb-3 col-6">
+            <div class="col-sm-auto col-6">
               <select class="form-select">
                 <option value="">Semua Kategori</option>
                 <option value="1">Novel</option>
@@ -26,15 +25,10 @@
                 <option value="3">Ensiklopedia</option>
               </select>
             </div>
-            <div class="col-sm-auto mb-3 col-6">
-              <input type="text" class="form-control" placeholder="Cari Buku" />
-            </div>
           </div>
         </div>
-        <div class="col-md-4 mb-3 text-end">
-          <button class="btn btn-blue" type="button" @click="goToForm = true">
-            <i class="bx bx-plus-circle me-2"></i>Tambah Pengajuan Baru
-          </button>
+        <div class="col-sm-3 ms-auto mb-2 col-6">
+          <input type="text" class="form-control" placeholder="Cari Buku" />
         </div>
       </div>
       <div class="row">
@@ -46,7 +40,7 @@
                   <th class="text-center">No.</th>
                   <th>Tanggal Pengajuan</th>
                   <th>Cover</th>
-                  <th>Pengarang</th>
+                  <th>judul</th>
                   <th>Judul Buku</th>
                   <th>Kategori Buku</th>
                   <th>Status</th>
@@ -58,7 +52,10 @@
                   <td class="text-center">1</td>
                   <td>29 Juli 2024</td>
                   <td>
-                    <img src="https://via.placeholder.com/70" alt="Cover Buku" />
+                    <img
+                      src="https://via.placeholder.com/70"
+                      alt="Cover Buku"
+                    />
                   </td>
                   <td>Pengarang 1</td>
                   <td>Judul Bukunya panjang sekali heheheheh</td>
@@ -107,14 +104,10 @@
           </div>
         </div>
       </div>
-    </template>
-    <template v-else>
-    </template>
+
   </TheParent>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import TheParent from "../components/TheParent.vue";
-const goToForm = ref<boolean>(false);
 </script>

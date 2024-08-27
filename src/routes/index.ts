@@ -63,10 +63,18 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/News.vue"),
   },
   {
-    path: "/pengajuan-buku-baru",
-    name: "Pengajuan Buku Baru",
+    path: '/upload-naskah',
+    name: 'Upload Naskah',
     meta: {
-      title: "Pengajuan Buku Baru",
+      title: "Upload Naskah",
+    },
+    component: () => import("../views/UploadNaskah.vue")
+  },
+  {
+    path: "/naskah-saya",
+    name: "Naskah Saya",
+    meta: {
+      title: "Naskah Saya",
     },
     component: () => import("../views/Submission.vue"),
   },
