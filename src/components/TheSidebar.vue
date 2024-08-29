@@ -95,7 +95,6 @@
 
 <script setup lang="ts">
 import { useSession } from '../stores/session';
-import { onMounted } from 'vue';
 
 const session = useSession();
 

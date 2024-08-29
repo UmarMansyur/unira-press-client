@@ -166,7 +166,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import LandingLayout from "./LandingLayout.vue";
 import { disableLoader, enableLoader } from "../helpers/event";
 import useApi from "../composables/api";

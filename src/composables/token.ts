@@ -1,11 +1,8 @@
 import { Base64 } from "js-base64";
 import { disableLoader, enableLoader } from "../helpers/event";
 import Notify from "../helpers/notify";
-import router from "../routes";
-import {useSession} from "../stores/session";
 
 export default function useToken() {
-  const session = useSession();
   const setToken = async (token: any) => {
     sessionStorage.setItem("token", JSON.stringify(token));
   };
