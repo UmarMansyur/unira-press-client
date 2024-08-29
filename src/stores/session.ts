@@ -12,6 +12,9 @@ export const useSession = defineStore({
     setUser(user: any) {
       this.user = user;
     },
+    setRole(role: string) {
+      this.user.role = role;
+    },
     logout() {
       this.user = null;
     },

@@ -1,5 +1,5 @@
 <template>
-  <LandingLayout>
+  <LandingLayout title="UNIRA PRESS">
     <template v-if="!detail">
       <div class="container px-5">
         <div class="text-center mb-4 overflow-hidden">
@@ -41,11 +41,14 @@
               :key="index.id"
             >
               <div class="card">
-                <img :src="index.cover" class="image-card" alt="..." />
+                <img :src="baseUrl + '/' + index.file_cover" class="image-card" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title">{{ index.title }}</h5>
                   <div v-html="index.sinopsis.substring(0, 200)"></div>
-                  <button class="btn btn-blue mt-3" @click="clickedDetail(index)">
+                  <button
+                    class="btn btn-blue mt-3"
+                    @click="clickedDetail(index)"
+                  >
                     Read More
                   </button>
                 </div>
@@ -83,11 +86,24 @@
         <div class="row">
           <div class="col-md-9">
             <div>
-              <h4 class="text-blue fw-bold mb-0">Judul: {{ selectData.title }}</h4>
-              <p class="text-muted my-0 fw-bold">Pengarang: {{ selectData.author }}</p>
-              <p class="text-muted my-0">Dibaca: {{ selectData.view_count }}</p>
+              <h4 class="text-blue fw-bold mb-0">
+                Judul: {{ selectData.judul }}
+              </h4>
+              <p class="text-muted my-0 fw-bold">
+                Pengarang: {{ selectData.pengarang }}
+              </p>
+              <p class="text-muted my-0">Dibaca: {{ selectData.dilihat }}</p>
               <div class="text-center">
-                <img :src="selectData.cover" class="img-fluid my-3" alt="..." />
+                <img :src="baseUrl + '/' + selectData.file_cover" class="img-fluid my-3" alt="..." />
+              </div>
+              <div class="text-start">
+                <h5 class="text-blue fw-bold">ISBN : {{ selectData.isbn ? selectData.isbn : 'xxxx-xxxx-xxxx-xxxx' }}</h5>
+              </div>
+              <div class="text-start">
+                <h5 class="text-blue fw-bold">Harga : {{ selectData.harga ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(selectData.harga).slice(0, -3) : 'Rp. 0' }}</h5>
+              </div>
+              <div class="text-start">
+                <h5 class="text-blue fw-bold">Sinopsis</h5>
               </div>
               <div v-html="selectData.sinopsis"></div>
             </div>
@@ -97,30 +113,25 @@
               Kembali
             </button>
           </div>
-         </div>
+        </div>
       </div>
     </template>
   </LandingLayout>
 </template>
 
 <script setup lang="ts">
+import useApi from "../composables/api";
 import { disableLoader, enableLoader } from "../helpers/event";
 import LandingLayout from "./LandingLayout.vue";
 import { ref, onMounted } from "vue";
 
-const tentangKami = ref<string>("");
+const { baseUrl } = useApi();
 
 const totalData = ref<number>(0);
 
 const detail = ref<boolean>(false);
 
-const loadData = async () => {
-  enableLoader();
-  const response = await fetch(import.meta.env.VITE_API + "/about-me");
-  const data = await response.json();
-  disableLoader();
-  tentangKami.value = data.data.content;
-};
+
 
 const katalogs = ref<any>({});
 const selectData = ref<any>({});
@@ -128,18 +139,16 @@ const page = ref<number>(1);
 
 const clickedDetail = async (data: any) => {
   selectData.value = data;
-  await fetch(
-    import.meta.env.VITE_API + "/landing/" + data.id, {
-      method: "PUT",
-    }
-  );
+  await fetch(import.meta.env.VITE_API + "/katalog/" + data.id, {
+    method: "PUT",
+  });
   detail.value = true;
 };
 
 const loadData2 = async () => {
   enableLoader();
   const response = await fetch(
-    import.meta.env.VITE_API + "/landing/katalog?limit=10&page=" + page.value
+    import.meta.env.VITE_API + "/katalog?limit=10&page=" + page.value
   );
   const data = await response.json();
   totalData.value = data.data.total_data;
@@ -152,7 +161,7 @@ const filterKatalog = async (id: string) => {
   enableLoader();
   if (id === "") {
     const response = await fetch(
-      import.meta.env.VITE_API + "/landing/katalog?limit=10&page=" + page.value
+      import.meta.env.VITE_API + "/katalog?limit=10&page=" + page.value
     );
     const data = await response.json();
     totalData.value = data.data.total_data;
@@ -161,7 +170,7 @@ const filterKatalog = async (id: string) => {
   } else {
     const response = await fetch(
       import.meta.env.VITE_API +
-        "/landing/katalog?category=" +
+        "/katalog?category=" +
         id +
         "&limit=10&page=" +
         page.value
@@ -184,7 +193,6 @@ const prevPage = async () => {
 };
 
 onMounted(async () => {
-  await loadData();
   await loadData2();
 });
 </script>

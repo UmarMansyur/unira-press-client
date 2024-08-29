@@ -7,7 +7,7 @@
             <span class="badge bg-blue font-size-14">
               <span>AKTIF</span>
             </span>
-            <h4 class="mb-0 mt-2">{{ session.getUser?.username }}</h4>
+            <h4 class="mb-0 mt-2">{{ session.getUser?.role }}</h4>
             <h3>{{ session.getUser?.nama }}</h3>
           </div>
           <div
@@ -28,13 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
 import TheParent from "../components/TheParent.vue";
 import { useSession } from "../stores/session";
 const session = useSession();
-
-onMounted(() => {
-  document.body.style.fontFamily =
-    "Noto Sans,Segoe UI,IBM Plex Sans,Tahoma,Geneva,Verdana,sans-serif";
-});
 </script>

@@ -1,6 +1,68 @@
 <template>
   <TheParent>
     <template v-if="!editClick">
+      <!-- <div class="row">
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h5>Jumlah Naskah</h5>
+                  <p class="mb-0">100</p>
+                </div>
+                <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center icon-circle font-size-24">
+                  <i class="bx bx-book-content"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h5>Naskah Diproses</h5>
+                  <p class="mb-0">100</p>
+                </div>
+                <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center icon-circle font-size-24">
+                  <i class="bx bx-file-find"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h5>Naskah Diterbitkan</h5>
+                  <p class="mb-0">100</p>
+                </div>
+                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center icon-circle font-size-24">
+                  <i class="bx bx-check"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h5>Naskah Ditolak</h5>
+                  <p class="mb-0">100</p>
+                </div>
+                <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center icon-circle font-size-24">
+                  <i class="bx bx-shield-x"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
       <div class="row mt-3">
         <div class="col-md-6 mb-3">
           <div class="row">
@@ -78,7 +140,7 @@
                 </tr>
               </thead>
               <tbody class="align-middle">
-                <tr v-for="(item, i) in result" style="cursor: pointer">
+                <tr v-for="(item, i) in result" style="cursor: pointer" :key="i">
                   <td class="text-center">
                     {{ currentPage * limitPage - limitPage + i + 1 }}
                   </td>
@@ -156,19 +218,26 @@
                     >
                   </td>
                   <td class="text-center">
+                    <RouterLink
+                      type="button"
+                      class="btn btn-sm btn-light"
+                      :to="`/naskah-saya/${encrypt(item.id.toString())}`"
+                    >
+                      <i class="bx bx-search"></i> Selengkapnya
+                    </RouterLink>
                     <button
                       type="button"
                       class="btn btn-sm btn-warning-2 mx-1"
                       @click="setEdit(item)"
                     >
-                      <i class="bx bx-pencil"></i>
+                      <i class="bx bx-pencil"></i> Edit
                     </button>
                     <button
                       type="button"
                       class="btn btn-sm btn-red"
                       @click="hapus(item.id)"
                     >
-                      <i class="bx bx-trash"></i>
+                      <i class="bx bx-trash"></i> Hapus
                     </button>
                   </td>
                 </tr>
@@ -291,7 +360,7 @@
           </label>
           <CKEditor @input="getInput" :value="sinopsis" />
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-12 mb-3">
           <label for="cover" class="form-label">Cover: </label>
           <input
             type="file"
@@ -304,19 +373,7 @@
             JPG, JPEG, PNG. Kosongkan jika belum ada cover</small
           >
         </div>
-        <div class="col-md-6 mb-3">
-          <label for="naskah" class="form-label">File Naskah: </label>
-          <input
-            type="file"
-            id="naskah"
-            class="form-control"
-            @change="getNaskah"
-          />
-          <small class="text-danger"
-            ><i class="bx bx-error"></i> Ukuran file maksimal 10MB. Format file:
-            Word. Kosongkan jika belum ada file naskah</small
-          >
-        </div>
+     
         <div class="col-md-6 mb-3">
           <label for="cover" class="form-label"
             ><sup class="text-danger">*</sup>Tipe Identifikasi:
@@ -523,6 +580,7 @@ import Notify from "../helpers/notify";
 import useApi from "../composables/api";
 import { useField, useForm } from "vee-validate";
 import Sweet from "../helpers/sweetalert2";
+import { encrypt } from "../helpers/crypto";
 const query = ref<string>("");
 const filter = ref<string>("");
 const {
@@ -555,15 +613,14 @@ const schema = yup.object().shape({
   pengarang: yup.string().required(),
   kategori_buku: yup.string().required(),
   sinopsis: yup.string().required(),
-  cover: yup.string(),
-  naskah: yup.string(),
+  cover: yup.mixed(),
   tipe_identifikasi: yup.string().required(),
   tipe_kepenulisan: yup.string().required(),
   editor: yup.string(),
   desainer: yup.string(),
   layouter: yup.string(),
   proofreader: yup.string(),
-  surat_pernyataan_keaslian: yup.string(),
+  surat_pernyataan_keaslian: yup.mixed(),
   penanggung_jawab: yup.string(),
   nomor_penanggung_jawab: yup.string(),
   ukuran: yup.string(),
@@ -579,7 +636,6 @@ useForm({
     kategori_buku: "",
     sinopsis: "",
     cover: "",
-    naskah: "",
     tipe_identifikasi: "",
     tipe_kepenulisan: "",
     editor: "",
@@ -621,15 +677,14 @@ const { value: judul_buku } = useField<string>("judul_buku");
 const { value: pengarang } = useField<string>("pengarang");
 const { value: kategori_buku } = useField<string>("kategori_buku");
 const { value: sinopsis } = useField<string>("sinopsis");
-const { value: cover } = useField<string>("cover");
-const { value: naskah } = useField<string>("naskah");
+const { value: cover } = useField<File | undefined | null>("cover");
 const { value: tipe_identifikasi } = useField<string>("tipe_identifikasi");
 const { value: tipe_kepenulisan } = useField<string>("tipe_kepenulisan");
 const { value: editor } = useField<string>("editor");
 const { value: desainer } = useField<string>("desainer");
 const { value: layouter } = useField<string>("layouter");
 const { value: proofreader } = useField<string>("proofreader");
-const { value: surat_pernyataan_keaslian } = useField<string>(
+const { value: surat_pernyataan_keaslian } = useField<File | undefined | null>(
   "surat_pernyataan_keaslian"
 );
 const { value: penanggung_jawab } = useField<string>("penanggung_jawab");
@@ -653,17 +708,15 @@ const getCover = (event: Event) => {
   cover.value = getFile(event);
 };
 
-const getNaskah = (event: Event) => {
-  naskah.value = getFile(event);
-};
 
-const getFile = (event: Event) => {
+
+const getFile = (event: Event): File | undefined | null => {
   const target = event.target as HTMLInputElement;
   const file = target.files?.[0];
   if (file) {
-    return file.name;
+    return file;
   }
-  return "";
+  return null;
 };
 
 const inputNominal = computed({
@@ -693,11 +746,6 @@ const onSave = async () => {
   if (cover.value) {
     formData = true;
     data.cover = cover.value;
-  }
-
-  if (naskah.value) {
-    formData = true;
-    data.naskah = naskah.value;
   }
 
   if (editor.value) {
@@ -771,15 +819,14 @@ const clearValue = () => {
   pengarang.value = "";
   kategori_buku.value = "";
   sinopsis.value = "";
-  cover.value = "";
-  naskah.value = "";
+  cover.value = null;
   tipe_identifikasi.value = "";
   tipe_kepenulisan.value = "";
   editor.value = "";
   desainer.value = "";
   layouter.value = "";
   proofreader.value = "";
-  surat_pernyataan_keaslian.value = "";
+  surat_pernyataan_keaslian.value = null;
   penanggung_jawab.value = "";
   nomor_penanggung_jawab.value = "";
   ukuran.value = "";
@@ -816,7 +863,7 @@ const setEdit = (item: any) => {
     proofreader.value = item.proofreader.split("external-")[1];
   }
   penanggung_jawab.value = item.penanggung_jawab;
-  nomor_penanggung_jawab.value = item.nomor_penanggung_jawab;
+  nomor_penanggung_jawab.value = item.nomor_hp_penanggung_jawab;
   ukuran.value = item.ukuran;
   jumlah_halaman.value = item.jumlah_halaman;
   harga.value = item.harga;
@@ -842,3 +889,10 @@ const hapus = (id: string) => {
   });
 };
 </script>
+
+<style>
+.icon-circle {
+  width: 50px;
+  height: 50px;
+}
+</style>

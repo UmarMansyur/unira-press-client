@@ -46,5 +46,7 @@ import { onMounted } from "vue";
 onMounted(() => {
   feather.replace();
   $("#side-menu").metisMenu();
+  document.body.style.fontFamily =
+    "Noto Sans,Segoe UI,IBM Plex Sans,Tahoma,Geneva,Verdana,sans-serif";
 });
 </script>

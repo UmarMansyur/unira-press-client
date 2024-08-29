@@ -4,6 +4,7 @@ import useToken from "./token";
 
 export default function useApi() {
   const { checkExpiredToken } = useToken();
+  const baseUrl = import.meta.env.VITE_API;
   const tryFetch = async (url: string, method: string, body?: any) => {
     try {
       enableLoader();
@@ -79,6 +80,7 @@ export default function useApi() {
   ) => {
     try {
       enableLoader();
+      await checkExpiredToken();
       const formData = new FormData();
       for (const key in body) {
         formData.append(key, body[key]);
@@ -111,5 +113,6 @@ export default function useApi() {
     putResource,
     deleteResource,
     postResourceFormData,
+    baseUrl
   };
 }

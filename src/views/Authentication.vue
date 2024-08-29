@@ -94,7 +94,7 @@
         <div class="mt-4 text-center">
           <p class="text-muted" style="font-size: 14px">
             Belum punya akun?
-            <a href="/register" class="text-primary-2 fw-bold">Daftar</a>
+            <RouterLink to="/register" class="text-primary-2 fw-bold">Daftar</RouterLink>
           </p>
         </div>
       </div>

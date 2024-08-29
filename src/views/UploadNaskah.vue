@@ -60,7 +60,7 @@
           JPG, JPEG, PNG. Kosongkan jika belum ada cover</small>
       </div>
       <div class="col-md-6 mb-3">
-        <label for="naskah" class="form-label">File Naskah:
+        <label for="naskah" class="form-label"><sup class="text-danger">*</sup>File Naskah:
         </label>
         <input type="file" id="naskah" class="form-control" @change="getNaskah" />
         <small class="text-danger"><i class="bx bx-error"></i> Ukuran file maksimal 10MB. Format file:
@@ -338,6 +338,11 @@ const onSave = async() => {
       Notify.error("Penanggung Jawab dan Nomor Penanggung Jawab harus diisi");
       return;
     }
+  }
+
+  if(!naskah.value) {
+    Notify.error("File naskah harus diisi");
+    return;
   }
 
 

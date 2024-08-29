@@ -71,12 +71,60 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/UploadNaskah.vue")
   },
   {
+    path: "/naskah",
+    name: "Naskah",
+    meta: {
+      title: "Naskah",
+    },
+    component: () => import("../views/Submission.vue"),
+  },
+  {
+    path: "/naskah/:id",
+    name: "Naskah Detail",
+    meta: {
+      title: "Naskah",
+    },
+    component: () => import("../views/Detail.vue"),
+  },
+  {
     path: "/naskah-saya",
     name: "Naskah Saya",
     meta: {
       title: "Naskah Saya",
     },
-    component: () => import("../views/Submission.vue"),
+    component: () => import("../views/NaskahSaya.vue"),
+  },
+  {
+    path: "/pengajuan-naskah",
+    name: "Pengajuan Naskah",
+    meta: {
+      title: "Pengajuan Naskah",
+    },
+    component: () => import("../views/PengajuanNaskah.vue"),
+  },
+  {
+    path: "/pengajuan-naskah/:id",
+    name: "Pengajuan Naskah Detail",
+    meta: {
+      title: "Pengajuan Naskah",
+    },
+    component: () => import("../views/DetailNaskah.vue"),
+  },
+  {
+    path: "/naskah-saya/:id",
+    name: "Naskah Saya Detail",
+    meta: {
+      title: "Naskah Saya",
+    },
+    component: () => import("../views/Detail.vue"),
+  },
+  {
+    path: "/hak-akses-pengguna",
+    name: "Hak Akses Pengguna",
+    meta: {
+      title: "Hak Akses Pengguna",
+    },
+    component: () => import("../views/UserPrivillege.vue"),
   },
   {
     path: "/pengajuan-isbn",
@@ -93,6 +141,24 @@ const routes: Array<RouteRecordRaw> = [
       title: "Kategori Buku",
     },
     component: () => import("../views/KategoriBuku.vue"),
+  },
+  {
+    path: "/register",
+    name: "Register",
+    meta: {
+      title: "Register",
+      isAuth: false,
+    },
+    component: () => import("../views/Register.vue"),
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    meta: {
+      title: "Profile",
+      isAuth: false,
+    },
+    component: () => import("../views/Profile.vue"),
   },
   {
     path: "/manajemen-role",
@@ -142,7 +208,9 @@ router.beforeEach(async (to, _, next) => {
         const role = user.UserPrivillege.map((item: any) => item.role.name);
         delete user.UserPrivillege;
         user.roles = role;
+        sessionStorage.setItem("role", role[0]);
         session.setUser(user);
+        session.setRole(sessionStorage.getItem("role"));
       } else {
         sessionStorage.clear();
         return next({ name: "Login" });

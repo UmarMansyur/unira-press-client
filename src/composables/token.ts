@@ -61,10 +61,7 @@ export default function useToken() {
       enableLoader();
       const exp = await checkExpiredToken();
       if (exp) {
-        session.$reset();
-        router.push({ name: "Login" });
-        sessionStorage.clear();
-        Notify.error("Token Kadaluarsa");
+        await refreshToken();
       }
       const token = await getToken();
       const response = await fetch(import.meta.env.VITE_API + "/auth/whoami", {
