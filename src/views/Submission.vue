@@ -140,7 +140,11 @@
                 </tr>
               </thead>
               <tbody class="align-middle">
-                <tr v-for="(item, i) in result" style="cursor: pointer" :key="i">
+                <tr
+                  v-for="(item, i) in result"
+                  style="cursor: pointer"
+                  :key="i"
+                >
                   <td class="text-center">
                     {{ currentPage * limitPage - limitPage + i + 1 }}
                   </td>
@@ -304,9 +308,13 @@
             v-model="kategori_buku"
           >
             <option value="" disabled>Pilih Kategori</option>
-            <option value="1">Novel</option>
-            <option value="2">Komik</option>
-            <option value="3">Ensiklopedia</option>
+            <option
+              v-for="kategori in kategoris"
+              :key="kategori.id"
+              :value="kategori.id"
+            >
+              {{ kategori.name }}
+            </option>
           </select>
         </div>
         <div class="mb-3 col-md-4">
@@ -373,7 +381,7 @@
             JPG, JPEG, PNG. Kosongkan jika belum ada cover</small
           >
         </div>
-     
+
         <div class="col-md-6 mb-3">
           <label for="cover" class="form-label"
             ><sup class="text-danger">*</sup>Tipe Identifikasi:
@@ -602,9 +610,16 @@ const {
 
 const editClick = ref<boolean>(false);
 
+const kategoris = ref<any>([]);
+const loadKategori = async () => {
+  const response = await getResource("/book-categories");
+  kategoris.value = response.data;
+};
+
 onMounted(async () => {
   enableLoader();
   await fetchData();
+  await loadKategori();
   disableLoader();
 });
 
@@ -657,19 +672,37 @@ const tipePengajuan = ref<string>("");
 
 const changeStatusPengajuan = (event: Event) => {
   statusPengajuan.value = (event.target as HTMLSelectElement).value;
-  filter.value = "?filter=" + statusPengajuan.value + '&filter_kategori=' + filterKategori.value + '&filter_tipe=' + tipePengajuan.value;
+  filter.value =
+    "?filter=" +
+    statusPengajuan.value +
+    "&filter_kategori=" +
+    filterKategori.value +
+    "&filter_tipe=" +
+    tipePengajuan.value;
   fetchData();
 };
 
 const changeKategori = (event: Event) => {
   filterKategori.value = (event.target as HTMLSelectElement).value;
-  filter.value = "?filter=" + statusPengajuan.value + '&filter_kategori=' + filterKategori.value + '&filter_tipe=' + tipePengajuan.value;
+  filter.value =
+    "?filter=" +
+    statusPengajuan.value +
+    "&filter_kategori=" +
+    filterKategori.value +
+    "&filter_tipe=" +
+    tipePengajuan.value;
   fetchData();
 };
 
 const changeTipePengajuan = (event: Event) => {
   tipePengajuan.value = (event.target as HTMLSelectElement).value;
-  filter.value = "?filter=" + statusPengajuan.value + '&filter_kategori=' + filterKategori.value + '&filter_tipe=' + tipePengajuan.value;
+  filter.value =
+    "?filter=" +
+    statusPengajuan.value +
+    "&filter_kategori=" +
+    filterKategori.value +
+    "&filter_tipe=" +
+    tipePengajuan.value;
   fetchData();
 };
 
@@ -708,8 +741,6 @@ const getCover = (event: Event) => {
   cover.value = getFile(event);
 };
 
-
-
 const getFile = (event: Event): File | undefined | null => {
   const target = event.target as HTMLInputElement;
   const file = target.files?.[0];
@@ -730,7 +761,7 @@ const getSurat = (event: Event) => {
   surat_pernyataan_keaslian.value = getFile(event);
 };
 
-const { postResourceFormData, putResource, deleteResource } = useApi();
+const { postResourceFormData, putResource, deleteResource, getResource } = useApi();
 
 const onSave = async () => {
   let formData = false;

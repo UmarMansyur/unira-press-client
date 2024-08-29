@@ -153,7 +153,7 @@
                       <i class="bx bx-credit-card"></i> Informasi Tagihan
                     </h5>
                     <div class="text-end">
-                      <button type="button" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#modal-tagihan" v-if="detail.PengajuanBuku[0].status_pengajuan !== 'diterbitkan' && session.getUser?.role === 'Pengguna' && detail.PengajuanBuku[0].status_pengajuan !== 'ditolak'">
+                      <button type="button" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#modal-tagihan" v-if="detail.PengajuanBuku[0].status_pengajuan !== 'diterbitkan' && session.getUser?.role !== 'Pengguna' && detail.PengajuanBuku[0].status_pengajuan !== 'ditolak'">
                         <i class="bx bx-plus"></i> Tambah Tagihan
                       </button>
                     </div>

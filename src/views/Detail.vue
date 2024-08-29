@@ -157,7 +157,7 @@
                     </h5>
                     <div class="text-end">
                       <div class="text-end">
-                      <button type="button" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#modal-tagihan" v-if="detail.PengajuanBuku[0].status_pengajuan !== 'diterbitkan' && session.getUser?.role === 'Pengguna' && detail.PengajuanBuku[0].status_pengajuan !== 'ditolak'">
+                      <button type="button" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#modal-tagihan" v-if="detail.PengajuanBuku[0].status_pengajuan !== 'diterbitkan' && session.getUser?.role !== 'Pengguna' && detail.PengajuanBuku[0].status_pengajuan !== 'ditolak'" @click="invoiceId = null; inputNominal = ''; keterangan = ''">
                         <i class="bx bx-plus"></i> Tambah Tagihan
                       </button>
                     </div>
@@ -891,85 +891,87 @@
                     }}
                   </h5>
                 </div>
-                <h5><i class="bx bx-info-circle"></i>Informasi Buku</h5>
-                <div class="mt-3">
-                  <label for="status_pengajuan" class="form-label"
-                    >Status Pengajuan:
-                  </label>
-                  <select
-                    class="form-select"
-                    id="status_pengajuan"
-                    v-model="statusPersetujuan"
-                  >
-                    <option value="" disabled>Pilih Status Pengajuan</option>
-                    <option value="revisi">Revisi</option>
-                    <option value="proses_cetak">Proses Cetak</option>
-                    <option value="diterbitkan">Diterbitkan</option>
-                  </select>
-                </div>
-                <div class="mt-3" v-if="detail.tipe_identifikasi === 'ISBN'">
-                  <label for="status_isbn" class="form-label">
-                    Status Pengajuan ISBN:
-                  </label>
-                  <select
-                    class="form-select"
-                    id="status_isbn"
-                    v-model="statusPengajuanISBN"
-                    v-if="detail.tipe_identifikasi === 'ISBN'"
-                  >
-                    <option value="" disabled>Pilih Status Pengajuan ISBN</option>
-                    <option value="proses">Proses</option>
-                    <option value="permohonan_revisi">Permohonan Revisi</option>
-                    <option value="ditolak">Ditolak</option>
-                    <option value="isbn_diterbitkan">Diterima</option>
-                  </select>
-                </div>
-                <div class="mt-3">
-                  <label for="ukuran" class="form-label">Ukuran: </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="ukuran"
-                    v-model="detail.ukuran"
-                  />
-                </div>
-                <div class="mt-3">
-                  <label for="jumlah_halaman" class="form-label"
-                    >Jumlah Halaman:
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="jumlah_halaman"
-                    v-model="detail.jumlah_halaman"
-                  />
-                </div>
-                <div class="mt-3">
-                  <label for="harga" class="form-label">Harga: </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="harga"
-                    v-model="detail.harga"
-                  />
-                </div>
-                <div class="mt-3" v-if="detail.tipe_identifikasi === 'ISBN'">
-                  <label for="isbn" class="form-label">ISBN: </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="isbn"
-                    v-model="detail.isbn"
-                  />
-                </div>
-                <div class="mt-3">
-                  <button
-                    type="button"
-                    class="btn btn-blue w-100"
-                    @click="saveInformasi"
-                  >
-                    <i class="bx bx-save me-2"></i>SIMPAN
-                  </button>
+                <div v-if="detail.PengajuanBuku[0].status_pengajuan !== 'ditolak' && session.getUser?.role === 'Administrator'">
+                  <h5><i class="bx bx-info-circle"></i>Informasi Buku</h5>
+                  <div class="mt-3">
+                    <label for="status_pengajuan" class="form-label"
+                      >Status Pengajuan:
+                    </label>
+                    <select
+                      class="form-select"
+                      id="status_pengajuan"
+                      v-model="statusPersetujuan"
+                    >
+                      <option value="" disabled>Pilih Status Pengajuan</option>
+                      <option value="revisi">Revisi</option>
+                      <option value="proses_cetak">Proses Cetak</option>
+                      <option value="diterbitkan">Diterbitkan</option>
+                    </select>
+                  </div>
+                  <div class="mt-3" v-if="detail.tipe_identifikasi === 'ISBN'">
+                    <label for="status_isbn" class="form-label">
+                      Status Pengajuan ISBN:
+                    </label>
+                    <select
+                      class="form-select"
+                      id="status_isbn"
+                      v-model="statusPengajuanISBN"
+                      v-if="detail.tipe_identifikasi === 'ISBN'"
+                    >
+                      <option value="" disabled>Pilih Status Pengajuan ISBN</option>
+                      <option value="proses">Proses</option>
+                      <option value="permohonan_revisi">Permohonan Revisi</option>
+                      <option value="ditolak">Ditolak</option>
+                      <option value="isbn_diterbitkan">Diterima</option>
+                    </select>
+                  </div>
+                  <div class="mt-3">
+                    <label for="ukuran" class="form-label">Ukuran: </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ukuran"
+                      v-model="detail.ukuran"
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <label for="jumlah_halaman" class="form-label"
+                      >Jumlah Halaman:
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="jumlah_halaman"
+                      v-model="detail.jumlah_halaman"
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <label for="harga" class="form-label">Harga: </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="harga"
+                      v-model="detail.harga"
+                    />
+                  </div>
+                  <div class="mt-3" v-if="detail.tipe_identifikasi === 'ISBN'">
+                    <label for="isbn" class="form-label">ISBN: </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="isbn"
+                      v-model="detail.isbn"
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <button
+                      type="button"
+                      class="btn btn-blue w-100"
+                      @click="saveInformasi"
+                    >
+                      <i class="bx bx-save me-2"></i>SIMPAN
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
