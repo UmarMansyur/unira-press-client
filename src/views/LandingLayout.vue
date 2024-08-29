@@ -108,14 +108,55 @@
     <main class="flex-grow-1">
       <slot></slot>
     </main>
-    <footer class="bg-blue text-white text-center py-3">
+    <footer class="bg-blue text-white text-center py-4 mt-5">
       <div class="container">
         <div class="row text-start">
-          <div class="col-md-4">
-            <h5 class="mb-3 text-white">UNIRA PRESS</h5>
-            <p class="mb-0">Jl. Raya Bangkalan - Kamal KM. 11 Desa Kramat Kec. Kamal Kab. Bangkalan</p>
-            <p class="mb-0">Telp. (031) 309 2000</p>
-            <p class="mb-0">Email: unira-press@unira.ac.id</p>
+          <div class="col-md-6">
+            <div class="d-flex align-items-center gap-3">
+              <div>
+                <img src="/assets/images/logo.png" alt="logo" width="70" />
+              </div>
+              <div>
+                <h5 class="mb-3 text-white">UNIRA PRESS</h5>
+                <p class="mb-0">Jl. Raya Panglegur No.Km 3,5, Barat, Panglegur, Kec. Tlanakan, Kabupaten Pamekasan, Jawa Timur 69371</p>
+                <p class="mb-0">Telp.  (0324) 322231</p>
+                <p class="mb-0">Email: unira-press@unira.ac.id</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <h5 class="mb-3 text-white">TAUTAN</h5>
+            <ul class="list-unstyled d-flex flex-column gap-2">
+              <li>
+                <a href="https://unira.ac.id" class="text-white">WEB UNIRA</a>
+              </li>
+              <li>
+                <a href="https://simat.unira.ac.id" class="text-white">SIMAT</a>
+              </li>
+              <li>
+                <a href="https://elearning.unira.ac.id" class="text-white">E-LEARNING</a>
+              </li>
+              <li>
+                <a href="https://silab.unira.ac.id/login" class="text-white">SILAB</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5 class="mb-3 text-white">SOCIAL MEDIA</h5>
+            <ul class="list-unstyled d-flex flex-column gap-2">
+              <li>
+                <a href="https://www.facebook.com/unira.ac.id" class="text-white">Facebook</a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/unira.ac.id/" class="text-white">Instagram</a>
+              </li>
+              <li>
+                <a href="https://www.youtube.com/channel/UC" class="text-white">Youtube</a>
+              </li>
+              <li>
+                <a href="https://twitter.com/unira.ac.id" class="text-white">Twitter</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
